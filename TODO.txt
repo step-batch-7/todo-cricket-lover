@@ -1,4 +1,4 @@
 create all the required files and directories
-	touch index.html 
+	touch index.html index.css
 
 create a home page with a title as TODO
