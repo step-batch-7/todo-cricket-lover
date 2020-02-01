@@ -1,0 +1,4 @@
+create all the required files and directories
+	touch index.html 
+
+create a home page with a title as TODO
