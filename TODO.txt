@@ -2,3 +2,19 @@ create all the required files and directories
 	touch index.html index.css
 
 create a home page with a title as TODO
+
+data-structure:
+	* TASKS: array of objects -> array of tasks 
+	*	each task: object with title and items
+	* ITEMS: array of objects -> array of items
+
+TASKS = [
+  {
+    Title: todo,
+		items:[
+						{ item: 'create all the required files and directories' , isDone: false, id = 1},
+						{ item: 'touch index.html index.css' , isDone: true, id = 2},
+						{item: 'create a homepage with a title as TODO', isDone: false, id: 3}
+					]
+  }
+];
