@@ -2,5 +2,15 @@ body {
   font-family: sans-serif;
 }
 h1 {
-	text-align: center;
+  text-align: center;
+  border: 1px solid gray;
+  border-radius: 6px;
+  box-shadow: gray;
+  width: 200px;
+  margin: auto;
 }
+
+/* #addTask {
+	border: 1px solid gray;
+	border-radius: 3px;
+} */

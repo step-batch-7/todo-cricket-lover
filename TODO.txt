@@ -11,10 +11,11 @@ data-structure:
 TASKS = [
   {
     Title: todo,
-		items:[
+		Items:[
 						{ item: 'create all the required files and directories' , isDone: false, id = 1},
 						{ item: 'touch index.html index.css' , isDone: true, id = 2},
-						{item: 'create a homepage with a title as TODO', isDone: false, id: 3}
-					]
+						{ item: 'create a homepage with a title as TODO', isDone: false, id: 3}
+					],
+		id: 1
   }
 ];
