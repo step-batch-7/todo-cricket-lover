@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>Todo</title>
     <link rel="stylesheet" href="css/index.css" />
-    <title>TODO</title>
+    <script src="./js/index.js"></script>
   </head>
   <body>
-    <div id="tasks">
-			<h1>TODO</h1>
-			<div id="addTask" >
-
-			</div>
+    <h1>TODO</h1>
+    <div>
+      <!-- <form action="createNewTask" method="post"> -->
+      Title: <input type="text" name="title" size="60" /><br />
+      Item: <input type="text" name="items" size="60" /><br />
+      <input type="text" name="items" size="60" /><br />
+      <input type="text" name="items" size="60" /><br />
+      <input type="submit" value="add item" onclick="main()" />
+      <!-- </form> -->
+      <div id="task-container">
+        <!-- __tasks__ -->
+      </div>
     </div>
   </body>
 </html>
