@@ -10,7 +10,10 @@ h1 {
   margin: auto;
 }
 
-/* #addTask {
-	border: 1px solid gray;
-	border-radius: 3px;
-} */
+h3 {
+  text-align: center;
+}
+
+.task {
+  border: 1px solid gray;
+}
