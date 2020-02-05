@@ -1,6 +1,3 @@
-const TASK_ID = 'task';
-const getTask = () => document.createElement(TASK_ID);
-
 const toHtml = function(tasks) {
   const { items, title } = tasks[tasks.length - 1];
   const taskContainer = document.getElementById('task-container');
@@ -10,7 +7,7 @@ const toHtml = function(tasks) {
     htmlItems = htmlItems + `<p>${item.item}</p>`;
   });
 
-  let html = `
+  const html = `
 	${taskContainer.innerHTML}
 <div class="task">
 <h3>${title}</h3>
@@ -24,13 +21,15 @@ ${htmlItems}
 const main = function() {
   const input = Array.from(document.getElementsByTagName('input'));
 
-  let body = input.map(element => {
+  const body = input.map(element => {
     const key = element.getAttribute('name');
     const value = element.value;
     return `${key}=${value}`;
   });
-  const pattern = new RegExp(' ', 'g');
   body.pop();
+
+  const pattern = new RegExp(' ', 'g');
+
   const request = new XMLHttpRequest();
   request.onload = function() {
     toHtml(JSON.parse(this.responseText));
