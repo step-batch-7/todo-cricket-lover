@@ -15,5 +15,12 @@ h3 {
 }
 
 .task {
-  border: 1px solid gray;
+	border: 1px solid gray;
+	width: 20%;
+}
+
+#task-container {
+	padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
 }
