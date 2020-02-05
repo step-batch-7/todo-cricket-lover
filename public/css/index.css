@@ -10,17 +10,31 @@ h1 {
   margin: auto;
 }
 
-h3 {
+h2 {
   text-align: center;
+  margin: auto;
 }
 
 .task {
-	border: 1px solid gray;
-	width: 20%;
+  background-color: white;
+  border: 1px solid darkgray;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-weight: lighter;
+  padding: 10px;
+}
+
+.addTitle {
+  height: 20px;
+}
+
+.addItem {
+  height: 40px;
 }
 
 #task-container {
-	padding: 20px;
+  padding: 30px;
   display: flex;
   flex-wrap: wrap;
 }
