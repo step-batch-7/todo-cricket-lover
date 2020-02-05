@@ -4,13 +4,13 @@ const toHtml = function(tasks) {
   let htmlItems = '';
 
   items.forEach(item => {
-    htmlItems = htmlItems + `<p>${item.item}</p>`;
+    htmlItems = htmlItems + `<li>${item.item}</li>`;
   });
 
   const html = `
 	${taskContainer.innerHTML}
 <div class="task">
-<h3>${title}</h3>
+<h2>${title}</h2>
 <hr>
 ${htmlItems}
 </div>`;
