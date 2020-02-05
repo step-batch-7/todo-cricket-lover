@@ -19,7 +19,7 @@ const serveStaticPage = function(req, res, next) {
   if (!fs.existsSync(`./public${filename}`)) {
     return next();
   }
-  let fileContent = fs.readFileSync(`${STATIC_FOLDER}${filename}`);
+  const fileContent = fs.readFileSync(`${STATIC_FOLDER}${filename}`);
   const [, extension] = filename.split('.');
   res.setHeader('Content-Type', CONTENT_TYPES[extension]);
   res.end(fileContent);
