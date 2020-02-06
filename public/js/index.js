@@ -1,24 +1,17 @@
-const toHtml = function(tasks) {
-  const { items, title } = tasks[tasks.length - 1];
-  const taskContainer = document.getElementById('task-container');
-  let htmlItems = '';
-
-  items.forEach(item => {
-    htmlItems = htmlItems + `<li>${item.item}</li>`;
-  });
+const toHtml = function(task) {
+  const { items, title, id } = task;
+  const htmlItems = items.map(item => `<li class="items">${item.item}</li>`);
 
   const html = `
-	${taskContainer.innerHTML}
-<div class="task">
+<div class="task" id="${id}">
 <h2>${title}</h2>
 <hr>
-${htmlItems}
+${htmlItems.join('')}
 </div>`;
-
-  taskContainer.innerHTML = html;
+  return html;
 };
 
-const main = function() {
+const createNewTask = function() {
   const input = Array.from(document.getElementsByTagName('input'));
 
   const body = input.map(element => {
@@ -27,14 +20,29 @@ const main = function() {
     return `${key}=${value}`;
   });
   body.pop();
-
   const pattern = new RegExp(' ', 'g');
+  const message = body.join('&').replace(pattern, '+');
+  sendXHR('POST', 'createNewTask', message, showTodoList);
+};
 
+const sendXHR = function(method, url, message, callback) {
   const request = new XMLHttpRequest();
   request.onload = function() {
-    toHtml(JSON.parse(this.responseText));
+    callback(JSON.parse(this.responseText));
   };
-  request.open('POST', 'createNewTask');
+  request.open(method, url);
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  request.send(body.join('&').replace(pattern, '+'));
+  request.send(message);
 };
+
+const showTodoList = function(tasks) {
+  const taskContainer = document.querySelector('#task-container');
+  const html = tasks.map(toHtml);
+  taskContainer.innerHTML = html.join('');
+};
+
+const load = function() {
+  sendXHR('GET', '/todoList', '', showTodoList);
+};
+
+window.onload = load;
