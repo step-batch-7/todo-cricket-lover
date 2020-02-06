@@ -46,3 +46,8 @@ h2 {
 #todo-list-container {
   padding: 30px;
 }
+
+.task-header {
+	display: flex;
+	flex-flow: row wrap;
+}
