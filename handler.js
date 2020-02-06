@@ -32,6 +32,17 @@ const getTodos = function() {
   return [];
 };
 
+const deleteTask = function(req, res) {
+  const todos = getTodos();
+  const id = +req.body;
+  const index = todos.findIndex(todo => todo.id === id);
+  todos.splice(index, 1);
+  fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(todos));
+};
+
 const createNewTask = function(req, res) {
   const todos = getTodos();
   const todo = querystring.parse(req.body);
@@ -77,6 +88,7 @@ const app = new App();
 app.use(readBody);
 app.get('todoList', todoList);
 app.get('', serveStaticPage);
+app.post('deleteTask', deleteTask);
 app.post('createNewTask', createNewTask);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);
