@@ -43,16 +43,15 @@ const deleteTask = function(req, res) {
   res.end(JSON.stringify(todos));
 };
 
+const TASK_ID = 1;
+
 const createNewTask = function(req, res) {
+  const { title } = querystring.parse(req.body);
   const todos = getTodos();
-  const todo = querystring.parse(req.body);
-
-  todo.items = todo.items.map((item, index) => {
-    return { item, id: index + 1 };
-  });
-  todo['id'] = todos.length + 1;
+  const lastTodo = todos[todos.length - TASK_ID];
+  const id = lastTodo ? lastTodo.id + TASK_ID : TASK_ID;
+  const todo = { title, items: [], id };
   todos.push(todo);
-
   fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');

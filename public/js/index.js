@@ -27,17 +27,9 @@ const deleteTask = function(id) {
 };
 
 const createNewTask = function() {
-  const input = Array.from(document.getElementsByTagName('input'));
-
-  const body = input.map(element => {
-    const key = element.getAttribute('name');
-    const value = element.value;
-    return `${key}=${value}`;
-  });
-  body.pop();
-  const pattern = new RegExp(' ', 'g');
-  const message = body.join('&').replace(pattern, '+');
-  sendXHR('POST', 'createNewTask', message, showTodoList);
+  const input = event.target.previousElementSibling;
+  sendXHR('POST', 'createNewTask', `title=${input.value}`, showTodoList);
+  input.value = '';
 };
 
 const showTodoList = function(tasks) {
