@@ -15,7 +15,7 @@ h2 {
   margin: auto;
 }
 
-.task {
+.todo-container {
   background-color: white;
   border: 1px solid darkgray;
   margin-right: 20px;
@@ -29,17 +29,20 @@ h2 {
   height: 20px;
 }
 
-.items {
-	padding-left: 10px;
-	padding-right: 10px;
+.item {
+  padding: 10px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.item p {
+  margin: 0%;
 }
 
 .addItem {
-  height: 40px;
+	height: 20px;
 }
 
-#task-container {
+#todo-list-container {
   padding: 30px;
-  display: flex;
-  flex-wrap: wrap;
 }
