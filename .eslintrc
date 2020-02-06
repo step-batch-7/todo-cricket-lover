@@ -85,6 +85,19 @@
         "no-magic-numbers": "off",
         "max-statements": "off"
       }
+    },
+    {
+      "files": ["index.js"],
+      "rules": {
+        "no-undef": "off",
+        "no-unused-vars": "off"
+      }
+    },
+    {
+      "files": ["config.js"],
+      "rules": {
+        "no-process-env": "off"
+      }
     }
   ]
 }
