@@ -29,6 +29,11 @@ h2 {
   height: 20px;
 }
 
+.items {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
 .addItem {
   height: 40px;
 }
