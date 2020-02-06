@@ -25,10 +25,17 @@ const serveStaticPage = function(req, res, next) {
   res.end(fileContent);
 };
 
-const todos = [];
+const getTodos = function() {
+  if (fs.existsSync(COMMENTS_PATH)) {
+    return JSON.parse(fs.readFileSync(COMMENTS_PATH, 'utf8'));
+  }
+  return [];
+};
 
 const createNewTask = function(req, res) {
+  const todos = getTodos();
   const todo = querystring.parse(req.body);
+
   todo.items = todo.items.map((item, index) => {
     return { item, id: index + 1 };
   });
@@ -58,9 +65,17 @@ const methodNotAllowed = function(req, res) {
   res.end();
 };
 
+const todoList = function(req, res) {
+  const todos = getTodos();
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(todos));
+};
+
 const app = new App();
 
 app.use(readBody);
+app.get('todoList', todoList);
 app.get('', serveStaticPage);
 app.post('createNewTask', createNewTask);
 app.get('', serveBadRequestPage);
