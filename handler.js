@@ -50,7 +50,7 @@ const createNewTask = function(req, res) {
   todo.items = todo.items.map((item, index) => {
     return { item, id: index + 1 };
   });
-  todo['id'] = todos.length++;
+  todo['id'] = todos.length + 1;
   todos.push(todo);
 
   fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
