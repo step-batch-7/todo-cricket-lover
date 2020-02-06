@@ -31,31 +31,42 @@ const getTodos = function() {
   }
   return [];
 };
+const todos = getTodos();
 
 const deleteTask = function(req, res) {
-  const todos = getTodos();
   const id = +req.body;
   const index = todos.findIndex(todo => todo.id === id);
-  todos.splice(index, 1);
+  todos.splice(index, ID);
+  serveTodoList(req, res);
+};
+
+const serveTodoList = function(req, res) {
   fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(todos));
 };
 
-const TASK_ID = 1;
+const ID = 1;
 
 const createNewTask = function(req, res) {
   const { title } = querystring.parse(req.body);
-  const todos = getTodos();
-  const lastTodo = todos[todos.length - TASK_ID];
-  const id = lastTodo ? lastTodo.id + TASK_ID : TASK_ID;
+
+  const lastTodo = todos[todos.length - ID];
+  const id = lastTodo ? lastTodo.id + ID : ID;
   const todo = { title, items: [], id };
   todos.push(todo);
-  fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(todos));
+  serveTodoList(req, res);
+};
+
+const createNewItem = function(req, res) {
+  const { item, todoId } = querystring.parse(req.body);
+
+  const todo = todos.find(todo => todo.id === +todoId);
+  const lastItem = todo[todo.length - ID];
+  const itemId = lastItem ? lastItem.id + ID : ID;
+  todo.items.push({ item, id: itemId, isDone: false });
+  serveTodoList(req, res);
 };
 
 const readBody = function(req, res, next) {
@@ -75,19 +86,13 @@ const methodNotAllowed = function(req, res) {
   res.end();
 };
 
-const todoList = function(req, res) {
-  const todos = getTodos();
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(todos));
-};
-
 const app = new App();
 
 app.use(readBody);
-app.get('todoList', todoList);
+app.get('todoList', serveTodoList);
 app.get('', serveStaticPage);
 app.post('deleteTask', deleteTask);
+app.post('createNewItem', createNewItem);
 app.post('createNewTask', createNewTask);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);
