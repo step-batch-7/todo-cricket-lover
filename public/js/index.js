@@ -3,8 +3,10 @@ const generateItemAdder = function(task) {
   const itemAdder = `
 	<div class="task" id="${id}">
 	<h2>${title}</h2>
+	<button onclick="deleteTask(${id})">delete</button>
 	<hr>
-	<input type="text" name="add item" class="addItem" placeholder="Enter your item here">
+	<input type="text" name="add item" class="addItem"
+	placeholder="Enter your item here">
 	<input type="submit" value="add item" onclick="createNewItem(${id})" />
 	</div>
 	`;
