@@ -2,9 +2,7 @@
 const fs = require('fs');
 const querystring = require('querystring');
 const { App } = require('./app');
-const {COMMENTS_PATH} = require('./config');
-
-
+const {TODOS_PATH} = require('./config');
 const CONTENT_TYPES = require('./public/lib/mimeTypes');
 
 const readBody = function(req, res, next) {
@@ -20,7 +18,7 @@ const readBody = function(req, res, next) {
 };
 
 const serveTodoList = function(req, res) {
-  fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todoList));
+  fs.writeFileSync(TODOS_PATH, JSON.stringify(todoList));
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(todoList));
@@ -41,8 +39,8 @@ const serveStaticPage = function(req, res, next) {
 };
 
 const getTodoList = function() {
-  if (fs.existsSync(COMMENTS_PATH)) {
-    return JSON.parse(fs.readFileSync(COMMENTS_PATH, 'utf8'));
+  if (fs.existsSync(TODOS_PATH)) {
+    return JSON.parse(fs.readFileSync(TODOS_PATH, 'utf8'));
   }
   return [];
 };
