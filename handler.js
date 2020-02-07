@@ -2,7 +2,8 @@
 const fs = require('fs');
 const querystring = require('querystring');
 const { App } = require('./app');
-const COMMENTS_PATH = `${__dirname}/data/todo.json`;
+const {COMMENTS_PATH} = require('./config');
+
 
 const CONTENT_TYPES = require('./public/lib/mimeTypes');
 
