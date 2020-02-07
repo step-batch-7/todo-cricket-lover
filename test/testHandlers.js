@@ -1,11 +1,38 @@
+const sinon = require('sinon');
 const request = require('supertest');
+const fs = require('fs');
 const { app } = require('../handler');
 
 describe('GET request', function() {
+  it('should get index.html when the path is /', function(done) {
+    request(app.serve.bind(app))
+      .get('/')
+      .expect('Content-Type', 'text/html', done)
+      .expect('Content-Length', '537')
+      .expect(/Todo/)
+      .expect(200);
+  });
   it('should give not found when incorrect path is given', function(done) {
     request(app.serve.bind(app))
       .get('/badFile')
       .expect(404, done);
+  });
+});
+
+describe('POST todo', function() {
+  beforeEach(() => sinon.replace(fs, 'writeFileSync', () => {}));
+  afterEach(() => sinon.restore());
+  it('should create new todo and post on index page', function(done) {
+    request(app.serve.bind(app))
+      .post('/createNewTodo')
+      .send('title=phani')
+      .expect(200, done);
+  });
+  it('should delete todo from index page', function(done) {
+    request(app.serve.bind(app))
+      .post('/deleteTodo')
+      .send('todoId=3')
+      .expect(200, done);
   });
 });
 
