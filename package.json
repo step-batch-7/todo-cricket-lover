@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha",
-    "start": "node server.js"
+    "test": "export DATA_STORE=test/resources/todo.json; nyc mocha",
+    "start": "export DATA_STORE=data/todo.json; node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "description": "",
   "devDependencies": {
     "eslint": "^6.8.0",
+    "sinon": "^8.1.1",
     "supertest": "^4.0.2"
   }
 }
