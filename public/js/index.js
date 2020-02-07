@@ -1,14 +1,14 @@
 const generateItemAdder = function(todo) {
-  const { title, id } = todo;
+  const { title } = todo;
   const itemAdder = `
 	<div class="task-header">
 	<h2>${title}</h2>
-	<button onclick="deleteTask()">delete</button>
+	<button onclick="deleteTodo()">delete</button>
 	</div>
 	<hr>
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
-	<input type="submit" value="add item" onclick="createNewItem()" />
+	<input type="submit" value="Add Item" onclick="createNewItem()" />
 	`;
   return itemAdder;
 };
@@ -27,10 +27,13 @@ const generateItem = function(html, task) {
   return previousHtml + newHtml;
 };
 
-const changeStatus = function() {
-  const [, item, todo] = event.path;
-  const message = `taskId=${item.id}&todoId=${todo.id}`;
-  sendXHR('POST', changeStatus, message, showTodoList);
+const generateTodo = function(todo) {
+  const { items, id } = todo;
+  const itemAdder = generateItemAdder(todo);
+  const generatedItems = items.reduce(generateItem, '');
+  const todoContainer = `<div class="todo" id="${id}">${itemAdder +
+    generatedItems}</div>`;
+  return todoContainer;
 };
 
 const sendXHR = function(method, url, message, callback) {
@@ -43,9 +46,24 @@ const sendXHR = function(method, url, message, callback) {
   request.send(message);
 };
 
-const deleteTask = function() {
+const createNewTodo = function() {
+  const input = event.target.previousElementSibling;
+  const message = `title=${input.value}`;
+  input.value && sendXHR('POST', 'createNewTodo', message, showTodoList);
+  input.value = '';
+};
+
+const deleteTodo = function() {
   const [, , todo] = event.path;
-  sendXHR('POST', 'deleteTask', `todoId=${todo.id}`, showTodoList);
+  sendXHR('POST', 'deleteTodo', `todoId=${todo.id}`, showTodoList);
+};
+
+const createNewItem = function() {
+  const input = event.target.previousElementSibling;
+  const [, todo] = event.path;
+  const message = `item=${input.value}&todoId=${todo.id}`;
+  input.value && sendXHR('POST', 'createNewItem', message, showTodoList);
+  input.value = '';
 };
 
 const deleteItem = function() {
@@ -58,34 +76,16 @@ const deleteItem = function() {
   );
 };
 
-const createNewTodo = function() {
-  const input = event.target.previousElementSibling;
-  const message = `title=${input.value}`;
-  input.value && sendXHR('POST', 'createNewTodo', message, showTodoList);
-  input.value = '';
+const changeStatus = function() {
+  const [, item, todo] = event.path;
+  const message = `taskId=${item.id}&todoId=${todo.id}`;
+  sendXHR('POST', changeStatus, message, showTodoList);
 };
 
-const createNewItem = function() {
-  const input = event.target.previousElementSibling;
-  const [, todo] = event.path;
-  const message = `item=${input.value}&todoId=${todo.id}`;
-  input.value && sendXHR('POST', 'createNewItem', message, showTodoList);
-  input.value = '';
-};
-
-const createTodo = function(todo) {
-  const { items, id } = todo;
-  const itemAdder = generateItemAdder(todo);
-  const generatedItems = items.reduce(generateItem, '');
-  const todoContainer = `<div class="todo" id="${id}">${itemAdder +
-    generatedItems}</div>`;
-  return todoContainer;
-};
-
-const showTodoList = function(tasks) {
+const showTodoList = function(todoList) {
   const todoListContainer = document.querySelector('#todo-list-container');
-  const html = tasks.map(createTodo);
-  todoListContainer.innerHTML = html.join('');
+  const todo = todoList.map(generateTodo);
+  todoListContainer.innerHTML = todo.join('');
 };
 
 const load = function() {

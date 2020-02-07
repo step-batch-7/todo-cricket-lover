@@ -6,9 +6,23 @@ const COMMENTS_PATH = `${__dirname}/data/todo.json`;
 
 const CONTENT_TYPES = require('./public/lib/mimeTypes');
 
-const serveBadRequestPage = function(req, res) {
-  res.statusCode = 404;
-  res.end('Page not found');
+const readBody = function(req, res, next) {
+  let userDetails = '';
+  req.on('data', chunk => {
+    userDetails += chunk;
+    return userDetails;
+  });
+  req.on('end', () => {
+    req.body = userDetails;
+    next();
+  });
+};
+
+const serveTodoList = function(req, res) {
+  fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todoList));
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(todoList));
 };
 
 const STATIC_FOLDER = `${__dirname}/public`;
@@ -25,57 +39,35 @@ const serveStaticPage = function(req, res, next) {
   res.end(fileContent);
 };
 
-const getTodos = function() {
+const getTodoList = function() {
   if (fs.existsSync(COMMENTS_PATH)) {
     return JSON.parse(fs.readFileSync(COMMENTS_PATH, 'utf8'));
   }
   return [];
 };
-const todos = getTodos();
+
+const todoList = getTodoList();
 const ID = 1;
-
-const deleteTask = function(req, res) {
-  const { todoId } = querystring.parse(req.body);
-  const index = todos.findIndex(todo => todo.id === +todoId);
-  todos.splice(index, ID);
-  serveTodoList(req, res);
-};
-
-const deleteItem = function(req, res) {
-  const { taskId, todoId } = querystring.parse(req.body);
-  const todo = todos.find(todo => todo.id === +todoId);
-  const index = todo.items.findIndex(item => item.id === +taskId);
-  todo.items.splice(index, ID);
-  serveTodoList(req, res);
-};
-
-const changeStatus = function(req, res) {
-  const { taskId, todoId } = querystring.parse(req.body);
-  const todo = todos.find(todo => todo.id === +todoId);
-  const item = todo.items.find(item => item.id === +taskId);
-  item.isDone = !item.isDone;
-  serveTodoList(req, res);
-};
-
-const serveTodoList = function(req, res) {
-  fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(todos));
-};
 
 const createNewTodo = function(req, res) {
   const { title } = querystring.parse(req.body);
-  const lastTodo = todos[todos.length - ID];
+  const lastTodo = todoList[todoList.length - ID];
   const id = lastTodo ? lastTodo.id + ID : ID;
   const todo = { title, items: [], id };
-  todos.push(todo);
+  todoList.push(todo);
+  serveTodoList(req, res);
+};
+
+const deleteTodo = function(req, res) {
+  const { todoId } = querystring.parse(req.body);
+  const todoIndex = todoList.findIndex(todo => todo.id === +todoId);
+  todoList.splice(todoIndex, ID);
   serveTodoList(req, res);
 };
 
 const createNewItem = function(req, res) {
   const { item, todoId } = querystring.parse(req.body);
-  const todo = todos.find(todo => todo.id === +todoId);
+  const todo = todoList.find(todo => todo.id === +todoId);
   const { items } = todo;
   const lastItem = items[items.length - ID];
   const itemId = lastItem ? lastItem.id + ID : ID;
@@ -83,16 +75,25 @@ const createNewItem = function(req, res) {
   serveTodoList(req, res);
 };
 
-const readBody = function(req, res, next) {
-  let userDetails = '';
-  req.on('data', chunk => {
-    userDetails += chunk;
-    return userDetails;
-  });
-  req.on('end', () => {
-    req.body = userDetails;
-    next();
-  });
+const deleteItem = function(req, res) {
+  const { taskId, todoId } = querystring.parse(req.body);
+  const { items } = todoList.find(todo => todo.id === +todoId);
+  const itemIndex = items.findIndex(item => item.id === +taskId);
+  items.splice(itemIndex, ID);
+  serveTodoList(req, res);
+};
+
+const changeStatus = function(req, res) {
+  const { taskId, todoId } = querystring.parse(req.body);
+  const todo = todoList.find(todo => todo.id === +todoId);
+  const item = todo.items.find(item => item.id === +taskId);
+  item.isDone = !item.isDone;
+  serveTodoList(req, res);
+};
+
+const serveBadRequestPage = function(req, res) {
+  res.statusCode = 404;
+  res.end('Page not found');
 };
 
 const methodNotAllowed = function(req, res) {
@@ -106,7 +107,7 @@ app.use(readBody);
 app.get('todoList', serveTodoList);
 app.get('', serveStaticPage);
 app.post('createNewTodo', createNewTodo);
-app.post('deleteTask', deleteTask);
+app.post('deleteTodo', deleteTodo);
 app.post('createNewItem', createNewItem);
 app.post('deleteItem', deleteItem);
 app.post('changeStatus', changeStatus);
