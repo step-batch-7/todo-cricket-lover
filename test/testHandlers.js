@@ -31,7 +31,25 @@ describe('POST todo', function() {
   it('should delete todo from index page', function(done) {
     request(app.serve.bind(app))
       .post('/deleteTodo')
-      .send('todoId=3')
+      .send('todoId=1')
+      .expect(200, done);
+  });
+  it('should create new item in a todo and post on index page', function(done) {
+    request(app.serve.bind(app))
+      .post('/createNewItem')
+      .send('item=picture&todoId=2')
+      .expect(200, done);
+  });
+  it('should delete item in a todo from index page', function(done) {
+    request(app.serve.bind(app))
+      .post('/deleteItem')
+      .send('taskId=1&todoId=3')
+      .expect(200, done);
+  });
+  it('should change status of an item in a todo from index page', function(done) {
+    request(app.serve.bind(app))
+      .post('/changeStatus')
+      .send('taskId=1&todoId=2')
       .expect(200, done);
   });
 });
