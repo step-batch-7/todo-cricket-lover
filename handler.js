@@ -40,6 +40,14 @@ const deleteTask = function(req, res) {
   serveTodoList(req, res);
 };
 
+const deleteItem = function(req, res) {
+  const { taskId, todoId } = querystring.parse(req.body);
+  const todo = todos.find(todo => todo.id === +todoId);
+  const index = todo.items.findIndex(item => item.id === +taskId);
+  todo.items.splice(index, ID);
+  serveTodoList(req, res);
+};
+
 const serveTodoList = function(req, res) {
   fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
   res.statusCode = 200;
@@ -51,7 +59,6 @@ const ID = 1;
 
 const createNewTask = function(req, res) {
   const { title } = querystring.parse(req.body);
-
   const lastTodo = todos[todos.length - ID];
   const id = lastTodo ? lastTodo.id + ID : ID;
   const todo = { title, items: [], id };
@@ -61,11 +68,11 @@ const createNewTask = function(req, res) {
 
 const createNewItem = function(req, res) {
   const { item, todoId } = querystring.parse(req.body);
-
   const todo = todos.find(todo => todo.id === +todoId);
-  const lastItem = todo[todo.length - ID];
+  const { items } = todo;
+  const lastItem = items[items.length - ID];
   const itemId = lastItem ? lastItem.id + ID : ID;
-  todo.items.push({ item, id: itemId, isDone: false });
+  items.push({ item, id: itemId, isDone: false });
   serveTodoList(req, res);
 };
 
@@ -91,9 +98,10 @@ const app = new App();
 app.use(readBody);
 app.get('todoList', serveTodoList);
 app.get('', serveStaticPage);
+app.post('createNewTask', createNewTask);
 app.post('deleteTask', deleteTask);
 app.post('createNewItem', createNewItem);
-app.post('createNewTask', createNewTask);
+app.post('deleteItem', deleteItem);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);
 app.use(methodNotAllowed);

@@ -1,5 +1,5 @@
-const generateItemAdder = function(task) {
-  const { title, id } = task;
+const generateItemAdder = function(todo) {
+  const { title, id } = todo;
   const itemAdder = `
 	<div class="task" id="${id}">
 	<div class="task-header">
@@ -22,6 +22,7 @@ const generateItem = function(html, task) {
 	<div class="item" id="${id}">
 	<input type="checkbox" name="checkbox" class="checkbox">
 	<p>${item}</p>
+	<button onclick="deleteItem(${id})">delete</button>
 	</div>
 	`;
   return previousHtml + newHtml;
@@ -39,6 +40,12 @@ const sendXHR = function(method, url, message, callback) {
 
 const deleteTask = function(id) {
   sendXHR('POST', 'deleteTask', id, showTodoList);
+};
+
+const deleteItem = function(id) {
+  const [,, todoContainer] = event.path;
+  const task = todoContainer.querySelector('.task');
+  sendXHR('POST', 'deleteItem', `taskId=${id}&todoId=${task.id}`, showTodoList);
 };
 
 const createNewTask = function() {
