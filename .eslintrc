@@ -81,7 +81,7 @@
     {
       "files": ["test*.js"],
       "rules": {
-        "max-len": "warn",
+        "max-len": "off",
         "no-magic-numbers": "off",
         "max-statements": "off"
       }
