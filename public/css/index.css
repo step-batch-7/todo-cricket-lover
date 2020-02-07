@@ -36,7 +36,8 @@ h2 {
 }
 
 .item p {
-  margin: 0%;
+	margin: 0%;
+	padding:0% 1% 0% 1%;
 }
 
 .addItem {
