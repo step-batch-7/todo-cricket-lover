@@ -51,21 +51,18 @@ const deleteItem = function() {
   );
 };
 
-const createNewTask = function() {
+const createNewTodo = function() {
   const input = event.target.previousElementSibling;
-  sendXHR('POST', 'createNewTask', `title=${input.value}`, showTodoList);
+  const message = `title=${input.value}`;
+  input.value && sendXHR('POST', 'createNewTodo', message, showTodoList);
   input.value = '';
 };
 
 const createNewItem = function() {
   const input = event.target.previousElementSibling;
   const [, todo] = event.path;
-  sendXHR(
-    'POST',
-    'createNewItem',
-    `item=${input.value}&todoId=${todo.id}`,
-    showTodoList
-  );
+  const message = `item=${input.value}&todoId=${todo.id}`;
+  input.value && sendXHR('POST', 'createNewItem', message, showTodoList);
   input.value = '';
 };
 

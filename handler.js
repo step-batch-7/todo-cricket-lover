@@ -56,7 +56,7 @@ const serveTodoList = function(req, res) {
   res.end(JSON.stringify(todos));
 };
 
-const createNewTask = function(req, res) {
+const createNewTodo = function(req, res) {
   const { title } = querystring.parse(req.body);
   const lastTodo = todos[todos.length - ID];
   const id = lastTodo ? lastTodo.id + ID : ID;
@@ -97,7 +97,7 @@ const app = new App();
 app.use(readBody);
 app.get('todoList', serveTodoList);
 app.get('', serveStaticPage);
-app.post('createNewTask', createNewTask);
+app.post('createNewTodo', createNewTodo);
 app.post('deleteTask', deleteTask);
 app.post('createNewItem', createNewItem);
 app.post('deleteItem', deleteItem);
