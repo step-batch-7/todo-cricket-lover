@@ -49,6 +49,14 @@ const deleteItem = function(req, res) {
   serveTodoList(req, res);
 };
 
+const changeStatus = function(req, res) {
+  const { taskId, todoId } = querystring.parse(req.body);
+  const todo = todos.find(todo => todo.id === +todoId);
+  const item = todo.items.find(item => item.id === +taskId);
+  item.isDone = !item.isDone;
+  serveTodoList(req, res);
+};
+
 const serveTodoList = function(req, res) {
   fs.writeFileSync(COMMENTS_PATH, JSON.stringify(todos));
   res.statusCode = 200;
@@ -101,6 +109,7 @@ app.post('createNewTodo', createNewTodo);
 app.post('deleteTask', deleteTask);
 app.post('createNewItem', createNewItem);
 app.post('deleteItem', deleteItem);
+app.post('changeStatus', changeStatus);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);
 app.use(methodNotAllowed);

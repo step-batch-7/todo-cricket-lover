@@ -15,15 +15,22 @@ const generateItemAdder = function(todo) {
 
 const generateItem = function(html, task) {
   const previousHtml = html;
-  const { item, id } = task;
+  const { item, id, isDone } = task;
   const newHtml = `
 	<div class="item" id="${id}">
-	<input type="checkbox" name="checkbox" class="checkbox">
+	<input type="checkbox" name="checkbox"
+	 class="checkbox" onclick="changeStatus()" ${isDone ? 'checked' : ''}>
 	<p>${item}</p>
 	<button onclick="deleteItem()">delete</button>
 	</div>
 	`;
   return previousHtml + newHtml;
+};
+
+const changeStatus = function() {
+  const [, item, todo] = event.path;
+  const message = `taskId=${item.id}&todoId=${todo.id}`;
+  sendXHR('POST', changeStatus, message, showTodoList);
 };
 
 const sendXHR = function(method, url, message, callback) {
