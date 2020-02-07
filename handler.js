@@ -32,10 +32,11 @@ const getTodos = function() {
   return [];
 };
 const todos = getTodos();
+const ID = 1;
 
 const deleteTask = function(req, res) {
-  const id = +req.body;
-  const index = todos.findIndex(todo => todo.id === id);
+  const { todoId } = querystring.parse(req.body);
+  const index = todos.findIndex(todo => todo.id === +todoId);
   todos.splice(index, ID);
   serveTodoList(req, res);
 };
@@ -54,8 +55,6 @@ const serveTodoList = function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(todos));
 };
-
-const ID = 1;
 
 const createNewTask = function(req, res) {
   const { title } = querystring.parse(req.body);

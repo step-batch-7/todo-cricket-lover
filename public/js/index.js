@@ -1,16 +1,14 @@
 const generateItemAdder = function(todo) {
   const { title, id } = todo;
   const itemAdder = `
-	<div class="task" id="${id}">
 	<div class="task-header">
 	<h2>${title}</h2>
-	<button onclick="deleteTask(${id})">delete</button>
+	<button onclick="deleteTask()">delete</button>
 	</div>
 	<hr>
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
-	<input type="submit" value="add item" onclick="createNewItem(${id})" />
-	</div>
+	<input type="submit" value="add item" onclick="createNewItem()" />
 	`;
   return itemAdder;
 };
@@ -22,7 +20,7 @@ const generateItem = function(html, task) {
 	<div class="item" id="${id}">
 	<input type="checkbox" name="checkbox" class="checkbox">
 	<p>${item}</p>
-	<button onclick="deleteItem(${id})">delete</button>
+	<button onclick="deleteItem()">delete</button>
 	</div>
 	`;
   return previousHtml + newHtml;
@@ -38,14 +36,19 @@ const sendXHR = function(method, url, message, callback) {
   request.send(message);
 };
 
-const deleteTask = function(id) {
-  sendXHR('POST', 'deleteTask', id, showTodoList);
+const deleteTask = function() {
+  const [, , todo] = event.path;
+  sendXHR('POST', 'deleteTask', `todoId=${todo.id}`, showTodoList);
 };
 
-const deleteItem = function(id) {
-  const [,, todoContainer] = event.path;
-  const task = todoContainer.querySelector('.task');
-  sendXHR('POST', 'deleteItem', `taskId=${id}&todoId=${task.id}`, showTodoList);
+const deleteItem = function() {
+  const [, item, todo] = event.path;
+  sendXHR(
+    'POST',
+    'deleteItem',
+    `taskId=${item.id}&todoId=${todo.id}`,
+    showTodoList
+  );
 };
 
 const createNewTask = function() {
@@ -54,22 +57,23 @@ const createNewTask = function() {
   input.value = '';
 };
 
-const createNewItem = function(id) {
+const createNewItem = function() {
   const input = event.target.previousElementSibling;
+  const [, todo] = event.path;
   sendXHR(
     'POST',
     'createNewItem',
-    `item=${input.value}&todoId=${id}`,
+    `item=${input.value}&todoId=${todo.id}`,
     showTodoList
   );
   input.value = '';
 };
 
 const createTodo = function(todo) {
-  const { items } = todo;
+  const { items, id } = todo;
   const itemAdder = generateItemAdder(todo);
   const generatedItems = items.reduce(generateItem, '');
-  const todoContainer = `<div class="todo-container">${itemAdder +
+  const todoContainer = `<div class="todo" id="${id}">${itemAdder +
     generatedItems}</div>`;
   return todoContainer;
 };
