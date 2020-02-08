@@ -3,12 +3,14 @@ const generateItemAdder = function(todo) {
   const itemAdder = `
 	<div class="task-header">
 	<h2>${title}</h2>
-	<button onclick="deleteTodo()">delete</button>
+	<img src="./svg/remove.svg" alt="delete" width="30px" onclick="deleteTodo()">
 	</div>
 	<hr>
+	<div class="itemAdder">
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
-	<input type="submit" value="Add Item" onclick="createNewItem()" />
+	<img src="./svg/plus.svg" alt="add" width="20px" onclick="createNewItem()" style="border: 1px solid lightgray;">
+	</div>
 	`;
   return itemAdder;
 };
@@ -18,10 +20,11 @@ const generateItem = function(html, task) {
   const { item, id, isDone } = task;
   const newHtml = `
 	<div class="item" id="${id}">
-	<input type="checkbox" name="checkbox"
+	<p><input type="checkbox" name="checkbox"
 	 class="checkbox" onclick="changeStatus()" ${isDone ? 'checked' : ''}>
-	<p>${item}</p>
-	<button onclick="deleteItem()">delete</button>
+	<span>${item}</span>
+	</p>
+	<img src="./svg/remove.svg" alt="delete" width="20px" onclick="deleteItem()">
 	</div>
 	`;
   return previousHtml + newHtml;
@@ -60,7 +63,7 @@ const deleteTodo = function() {
 
 const createNewItem = function() {
   const input = event.target.previousElementSibling;
-  const [, todo] = event.path;
+  const [, , todo] = event.path;
   const message = `item=${input.value}&todoId=${todo.id}`;
   input.value && sendXHR('POST', 'createNewItem', message, showTodoList);
   input.value = '';

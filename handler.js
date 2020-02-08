@@ -2,7 +2,7 @@
 const fs = require('fs');
 const querystring = require('querystring');
 const { App } = require('./app');
-const {TODOS_PATH} = require('./config');
+const { TODOS_PATH } = require('./config');
 const CONTENT_TYPES = require('./public/lib/mimeTypes');
 
 const readBody = function(req, res, next) {
