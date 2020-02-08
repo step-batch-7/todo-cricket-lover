@@ -8,15 +8,15 @@
   <body>
     <h1>TODO</h1>
     <div>
-      <div id="addTask">
+      <div id="todoAdder">
         <input
           type="text"
           name="title"
           size="60"
           placeholder="Title"
           class="addTitle"
-        />
-        <input type="submit" value="Create" onclick="createNewTodo()" />
+				/>
+				<img src="./svg/plus.svg" alt="add" width="20px" onclick="createNewTodo()" style="border: 1px solid lightgray;">
       </div>
       <div id="todo-list-container"></div>
     </div>
