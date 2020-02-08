@@ -2,8 +2,9 @@ const generateItemAdder = function(todo) {
   const { title } = todo;
   const itemAdder = `
 	<div class="task-header">
-	<h2>${title}</h2>
-	<img src="./svg/remove.svg" alt="delete" width="30px" onclick="deleteTodo()">
+	<h2 onfocusout="renameTitle()">${title}</h2>
+	<span><img src="./svg/edit.svg" alt="edit" width="30px" onclick="editTitle()">
+	<img src="./svg/remove.svg" alt="delete" width="30px" onclick="deleteTodo()"></span>
 	</div>
 	<hr>
 	<div class="itemAdder">
@@ -83,6 +84,20 @@ const changeStatus = function() {
   const [, , item, todo] = event.path;
   const message = `taskId=${item.id}&todoId=${todo.id}`;
   sendXHR('POST', changeStatus, message, showTodoList);
+};
+
+const editTitle = function() {
+  const [, , taskAdder] = event.path;
+  const title = taskAdder.querySelector('h2');
+  title.setAttribute('contenteditable', true);
+  title.focus();
+};
+
+const renameTitle = function() {
+  const [, taskAdder, todo] = event.path;
+  const newTitle = taskAdder.querySelector('h2').innerText;
+  const message = `todoId=${todo.id}&newTitle=${newTitle}`;
+  sendXHR('POST', renameTitle, message, showTodoList);
 };
 
 const showTodoList = function(todoList) {

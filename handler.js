@@ -90,6 +90,13 @@ const changeStatus = function(req, res) {
   serveTodoList(req, res);
 };
 
+const renameTitle = function(req, res) {
+  const { todoId, newTitle } = querystring.parse(req.body);
+  const todo = todoList.find(todo => todo.id === +todoId);
+  todo.title = newTitle;
+  serveTodoList(req, res);
+};
+
 const serveBadRequestPage = function(req, res) {
   res.statusCode = 404;
   res.end('Page not found');
@@ -110,6 +117,7 @@ app.post('deleteTodo', deleteTodo);
 app.post('createNewItem', createNewItem);
 app.post('deleteItem', deleteItem);
 app.post('changeStatus', changeStatus);
+app.post('renameTitle', renameTitle);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);
 app.use(methodNotAllowed);
