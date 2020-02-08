@@ -24,7 +24,7 @@ const generateItem = function(html, task) {
 	 class="checkbox" onclick="changeStatus()" ${isDone ? 'checked' : ''}>
 	<span>${item}</span>
 	</p>
-	<img src="./svg/remove.svg" alt="delete" width="20px" onclick="deleteItem()">
+	<img src="./svg/remove.svg" alt="delete" width="18px" onclick="deleteItem()">
 	</div>
 	`;
   return previousHtml + newHtml;

@@ -1,5 +1,5 @@
 body {
-  font-family: sans-serif;
+	font-family: sans-serif;
 }
 h1 {
   text-align: center;
@@ -13,7 +13,7 @@ h1 {
 h2 {
   font-weight: normal;
   text-align: center;
-  margin: auto 0
+  margin: auto 0;
 }
 
 .todo {
@@ -26,20 +26,28 @@ h2 {
   padding: 10px 10px 20px 10px;
 }
 
+img,
+input[type="checkbox"]{
+	cursor: pointer;
+}
+
 .addTitle {
   height: 20px;
 }
 
 .item {
-  padding: 10px 0px 0px 0px;
+  margin: 10px 0px 0px 0px;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
 }
 
+.item:hover {
+	background-color: rgb(241, 241, 241);
+}
+
 .item p {
   margin: 0%;
-  padding: 0% 10px 0% 10px;
 }
 
 #todoAdder {
@@ -65,12 +73,19 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   padding: 30px;
-  justify-content: flex-start;
+	justify-content: flex-start;
 }
 
 .task-header {
   display: flex;
-	flex-flow: row wrap;
-	justify-content:space-between
+  flex-flow: row wrap;
+  justify-content: space-between;
 }
 
+.item img {
+  display: none;
+}
+
+.item:hover img {
+	display: inline;
+}
