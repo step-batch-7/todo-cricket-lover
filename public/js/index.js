@@ -80,7 +80,7 @@ const deleteItem = function() {
 };
 
 const changeStatus = function() {
-  const [, item, todo] = event.path;
+  const [, , item, todo] = event.path;
   const message = `taskId=${item.id}&todoId=${todo.id}`;
   sendXHR('POST', changeStatus, message, showTodoList);
 };
