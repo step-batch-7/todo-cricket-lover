@@ -110,9 +110,7 @@ const editItem = function() {
 const modifyItem = function() {
   const [span, , task, todo] = event.path;
   const newItem = span.innerText;
-
   const message = `todoId=${todo.id}&taskId=${task.id}&newItem=${newItem}`;
-  console.log(message);
   sendXHR('POST', modifyItem, message, showTodoList);
 };
 
