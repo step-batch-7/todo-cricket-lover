@@ -22,7 +22,7 @@ const generateItem = function(html, task) {
   const newHtml = `
 	<div class="item" id="${id}">
 	<p><input type="checkbox" name="checkbox"
-	 class="checkbox" onclick="changeStatus()" ${isDone ? 'checked' : ''}>
+	 class="checkbox" onclick="changeItemStatus()" ${isDone ? 'checked' : ''}>
 	<span onfocusout="modifyItem()">${item}</span>
 	</p><div><img src="./svg/edit.svg" alt="edit" width="18px" onclick="editItem()">
 	<img src="./svg/remove.svg" alt="delete" width="18px" onclick="deleteItem()"></div>
