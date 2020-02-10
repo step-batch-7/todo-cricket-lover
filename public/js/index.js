@@ -23,9 +23,9 @@ const generateItem = function(html, task) {
 	<div class="item" id="${id}">
 	<p><input type="checkbox" name="checkbox"
 	 class="checkbox" onclick="changeStatus()" ${isDone ? 'checked' : ''}>
-	<span>${item}</span>
-	</p>
-	<img src="./svg/remove.svg" alt="delete" width="18px" onclick="deleteItem()">
+	<span onfocusout="modifyItem()">${item}</span>
+	</p><div><img src="./svg/edit.svg" alt="edit" width="18px" onclick="editItem()">
+	<img src="./svg/remove.svg" alt="delete" width="18px" onclick="deleteItem()"></div>
 	</div>
 	`;
   return previousHtml + newHtml;
@@ -71,7 +71,7 @@ const createNewItem = function() {
 };
 
 const deleteItem = function() {
-  const [, item, todo] = event.path;
+  const [, , item, todo] = event.path;
   sendXHR(
     'POST',
     'deleteItem',
@@ -98,6 +98,22 @@ const renameTitle = function() {
   const newTitle = taskAdder.querySelector('h2').innerText;
   const message = `todoId=${todo.id}&newTitle=${newTitle}`;
   sendXHR('POST', renameTitle, message, showTodoList);
+};
+
+const editItem = function() {
+  const [, , taskAdder] = event.path;
+  const title = taskAdder.querySelector('span');
+  title.setAttribute('contenteditable', true);
+  title.focus();
+};
+
+const modifyItem = function() {
+  const [span, , task, todo] = event.path;
+  const newItem = span.innerText;
+
+  const message = `todoId=${todo.id}&taskId=${task.id}&newItem=${newItem}`;
+  console.log(message);
+  sendXHR('POST', modifyItem, message, showTodoList);
 };
 
 const showTodoList = function(todoList) {
