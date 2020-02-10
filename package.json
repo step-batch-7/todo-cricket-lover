@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "export DATA_STORE=test/resources/todo.json; nyc mocha",
-    "start": "export DATA_STORE=data/todo.json; node server.js"
+		"start": "export DATA_STORE=data/todo.json; nodemon server.js",
+		"eslint": "eslint . --ext .js",
+		"preCommit": "npm test && npm run eslint"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,9 @@
   "description": "",
   "devDependencies": {
     "eslint": "^6.8.0",
+    "nodemon": "^2.0.2",
     "sinon": "^8.1.1",
     "supertest": "^4.0.2"
-  }
+  },
+  "dependencies": {}
 }
