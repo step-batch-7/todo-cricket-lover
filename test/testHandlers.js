@@ -8,7 +8,6 @@ describe('GET request', function() {
     request(app.serve.bind(app))
       .get('/')
       .expect('Content-Type', 'text/html', done)
-      .expect('Content-Length', '579')
       .expect(/Todo/)
       .expect(200);
   });
