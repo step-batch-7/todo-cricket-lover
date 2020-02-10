@@ -8,7 +8,7 @@ describe('GET request', function() {
     request(app.serve.bind(app))
       .get('/')
       .expect('Content-Type', 'text/html', done)
-      .expect('Content-Length', '537')
+      .expect('Content-Length', '579')
       .expect(/Todo/)
       .expect(200);
   });
@@ -48,7 +48,7 @@ describe('POST todo', function() {
   });
   it('should change status of an item in a todo from index page', function(done) {
     request(app.serve.bind(app))
-      .post('/changeStatus')
+      .post('/changeItemStatus')
       .send('taskId=1&todoId=2')
       .expect(200, done);
   });
