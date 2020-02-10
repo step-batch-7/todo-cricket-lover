@@ -3,14 +3,18 @@ const generateItemAdder = function(todo) {
   const itemAdder = `
 	<div class="task-header">
 	<h2 onfocusout="renameTitle()">${title}</h2>
-	<span><img src="./svg/edit.svg" alt="edit" width="30px" onclick="editTitle()">
-	<img src="./svg/remove.svg" alt="delete" width="30px" onclick="deleteTodo()"></span>
+	<span>
+	<img src="./svg/edit.svg" alt="edit" class="edit-img" onclick="editTitle()">
+	<img src="./svg/remove.svg" alt="remove" class="remove-img" 
+	onclick="deleteTodo()">
+	</span>
 	</div>
 	<hr>
 	<div class="itemAdder">
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
-	<img src="./svg/plus.svg" alt="add" width="20px" onclick="createNewItem()" style="border: 1px solid lightgray;">
+	<img src="./svg/plus.svg" alt="add" class="add-icon" 
+	onclick="createNewItem()">
 	</div>
 	`;
   return itemAdder;
@@ -24,8 +28,8 @@ const generateItem = function(html, task) {
 	<p><input type="checkbox" name="checkbox"
 	 class="checkbox" onclick="changeItemStatus()" ${isDone ? 'checked' : ''}>
 	<span onfocusout="modifyItem()">${item}</span>
-	</p><div><img src="./svg/edit.svg" alt="edit" width="18px" onclick="editItem()">
-	<img src="./svg/remove.svg" alt="delete" width="18px" onclick="deleteItem()"></div>
+	</p><div><img src="./svg/edit.svg" alt="edit" onclick="editItem()">
+	<img src="./svg/remove.svg" alt="delete" onclick="deleteItem()"></div>
 	</div>
 	`;
   return previousHtml + newHtml;
@@ -35,8 +39,9 @@ const generateTodo = function(todo) {
   const { items, id } = todo;
   const itemAdder = generateItemAdder(todo);
   const generatedItems = items.reduce(generateItem, '');
-  const todoContainer = `<div class="todo" id="${id}">${itemAdder +
-    generatedItems}</div>`;
+  const todoContainer = `<div class="todo" id="${id}">
+	<div>${itemAdder}</div>
+	<div class="item-container">${generatedItems}</div></div>`;
   return todoContainer;
 };
 
@@ -71,7 +76,7 @@ const createNewItem = function() {
 };
 
 const deleteItem = function() {
-  const [, , item, todo] = event.path;
+  const [, , item, , todo] = event.path;
   sendXHR(
     'POST',
     'deleteItem',
@@ -81,7 +86,7 @@ const deleteItem = function() {
 };
 
 const changeItemStatus = function() {
-  const [, , item, todo] = event.path;
+  const [, , item, , todo] = event.path;
   const message = `taskId=${item.id}&todoId=${todo.id}`;
   sendXHR('POST', changeItemStatus, message, showTodoList);
 };
@@ -108,7 +113,7 @@ const editItem = function() {
 };
 
 const modifyItem = function() {
-  const [span, , task, todo] = event.path;
+  const [span, , task, , todo] = event.path;
   const newItem = span.innerText;
   const message = `todoId=${todo.id}&taskId=${task.id}&newItem=${newItem}`;
   sendXHR('POST', modifyItem, message, showTodoList);
