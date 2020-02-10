@@ -53,7 +53,7 @@ input[type='checkbox'] {
   margin: 0%;
 }
 
-#todoAdder {
+.todoAdder {
   margin-top: 40px;
   display: flex;
   flex-flow: row wrap;
@@ -71,7 +71,7 @@ input[type='checkbox'] {
   width: 363px;
 }
 
-#todo-list-container {
+.todo-list-container {
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;

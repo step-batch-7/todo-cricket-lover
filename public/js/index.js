@@ -63,13 +63,13 @@ const createNewTodo = function() {
 };
 
 const deleteTodo = function() {
-  const [, , , todo] = event.path;
+  const [, , , , todo] = event.path;
   sendXHR('POST', 'deleteTodo', `todoId=${todo.id}`, showTodoList);
 };
 
 const createNewItem = function() {
   const input = event.target.previousElementSibling;
-  const [, , todo] = event.path;
+  const [, , , todo] = event.path;
   const message = `item=${input.value}&todoId=${todo.id}`;
   input.value && sendXHR('POST', 'createNewItem', message, showTodoList);
   input.value = '';
@@ -99,7 +99,7 @@ const editTitle = function() {
 };
 
 const renameTitle = function() {
-  const [, taskAdder, todo] = event.path;
+  const [, taskAdder, , todo] = event.path;
   const newTitle = taskAdder.querySelector('h2').innerText;
   const message = `todoId=${todo.id}&newTitle=${newTitle}`;
   sendXHR('POST', renameTitle, message, showTodoList);
@@ -120,7 +120,7 @@ const modifyItem = function() {
 };
 
 const showTodoList = function(todoList) {
-  const todoListContainer = document.querySelector('#todo-list-container');
+  const todoListContainer = document.querySelector('.todo-list-container');
   const todo = todoList.map(generateTodo);
   todoListContainer.innerHTML = todo.join('');
 };
