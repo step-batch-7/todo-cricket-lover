@@ -82,7 +82,7 @@ const deleteItem = function(req, res) {
   serveTodoList(req, res);
 };
 
-const changeStatus = function(req, res) {
+const changeItemStatus = function(req, res) {
   const { taskId, todoId } = querystring.parse(req.body);
   const todo = todoList.find(todo => todo.id === +todoId);
   const item = todo.items.find(item => item.id === +taskId);
@@ -116,7 +116,7 @@ app.post('createNewTodo', createNewTodo);
 app.post('deleteTodo', deleteTodo);
 app.post('createNewItem', createNewItem);
 app.post('deleteItem', deleteItem);
-app.post('changeStatus', changeStatus);
+app.post('changeItemStatus', changeItemStatus);
 app.post('renameTitle', renameTitle);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);

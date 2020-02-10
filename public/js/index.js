@@ -58,7 +58,7 @@ const createNewTodo = function() {
 };
 
 const deleteTodo = function() {
-  const [, , todo] = event.path;
+  const [, , , todo] = event.path;
   sendXHR('POST', 'deleteTodo', `todoId=${todo.id}`, showTodoList);
 };
 
@@ -80,10 +80,10 @@ const deleteItem = function() {
   );
 };
 
-const changeStatus = function() {
+const changeItemStatus = function() {
   const [, , item, todo] = event.path;
   const message = `taskId=${item.id}&todoId=${todo.id}`;
-  sendXHR('POST', changeStatus, message, showTodoList);
+  sendXHR('POST', changeItemStatus, message, showTodoList);
 };
 
 const editTitle = function() {
