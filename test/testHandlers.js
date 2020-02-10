@@ -52,6 +52,18 @@ describe('POST todo', function() {
       .send('taskId=1&todoId=2')
       .expect(200, done);
   });
+  it('should rename the title of a todo', function(done) {
+    request(app.serve.bind(app))
+      .post('/renameTitle')
+      .send('todoId=2&newTitle=phani')
+      .expect(200, done);
+  });
+  it('should modify the item of a todo', function(done) {
+    request(app.serve.bind(app))
+      .post('/modifyItem')
+      .send('todoId=2&newItem=phani&taskId=1')
+      .expect(200, done);
+  });
 });
 
 describe('PUT request', function() {
