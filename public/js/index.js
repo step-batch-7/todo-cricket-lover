@@ -128,6 +128,18 @@ const searchByTitle = function(calledOn) {
   showTodoList(matchedList);
 };
 
+const searchByTask = function(calledOn) {
+  if (calledOn.value === '') {
+    showTodoList();
+    return;
+  }
+  const matcher = new RegExp(calledOn.value, 'i');
+  const matchedList = TODO_LIST.filter(todo =>
+    todo.items.some(item => item.item.match(matcher))
+  );
+  showTodoList(matchedList);
+};
+
 const load = function() {
   sendXHR('GET', 'todoList', '');
 };

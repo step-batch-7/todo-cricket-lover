@@ -41,8 +41,8 @@ input[type='checkbox'] {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-	height: 19px;
-	width: 98%;
+  height: 19px;
+  width: 98%;
 }
 
 .item:hover {
@@ -109,23 +109,27 @@ input[type='checkbox'] {
 }
 
 .edit-img {
-	width: 30px;
+  width: 30px;
 }
 
 .remove-img {
-	width: 30px;
+  width: 30px;
 }
 
 .add-icon {
-	width: 20px;
-	border: 1px solid lightgray;
+  width: 20px;
+  border: 1px solid lightgray;
 }
 
 .search-bars {
-	margin: 1% auto;
+  /* border: 1px solid; */
+  display: flex;
+  justify-content: space-between;
+  margin: 1% auto;
 }
 
-.title-search {
-	width: 30%;
-	height: 2vw;
+.title-search,
+.task-search {
+  width: 30%;
+  height: 2vw;
 }

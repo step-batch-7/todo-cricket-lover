@@ -9,8 +9,19 @@
     <h1>TODO</h1>
     <div>
       <div class="search-bars">
-				<input type="text" placeholder="Search" oninput="searchByTitle(this)" class="title-search" />
-			</div>
+        <input
+          type="text"
+          placeholder="Search by todo title"
+          class="title-search"
+          oninput="searchByTitle(this)"
+        />
+        <input
+          type="text"
+          placeholder="Search by task"
+          class="task-search"
+          oninput="searchByTask(this)"
+        />
+      </div>
       <div class="todo-adder">
         <input
           type="text"
