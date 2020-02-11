@@ -1,11 +1,31 @@
-const generateTodoHeader = function(title) {
+const generateItemTemplate = function(todoId, html, item) {
+  const previousHtml = html;
+  const { task, taskId, isDone } = item;
+  const checkStat = isDone ? 'checked' : '';
+  const newHtml = `
+	<div class="item" id="task-${todoId}_${taskId}">
+	<p><input type="checkbox" name="checkbox"
+	class="checkbox" onclick="changeItemStatus(${todoId}, ${taskId})" 
+	${checkStat}>
+	<span onfocusout="modifyItem(${todoId}, ${taskId})">${task}</span>
+	</p><div><img src="./svg/edit.svg" alt="edit" 
+	onclick="editItem(${todoId}, ${taskId})">
+	<img src="./svg/remove.svg" alt="delete" 
+	onclick="deleteItem(${todoId}, ${taskId})"></div>
+	</div>
+	`;
+  return previousHtml + newHtml;
+};
+
+const generateTodoHeader = function(title, todoId) {
   const todoHeader = `
 	<div class="todo-header">
-	<h2 onfocusout="renameTitle()">${title}</h2>
+	<h2 onfocusout="renameTitle(${todoId})">${title}</h2>
 	<span>
-	<img src="./svg/edit.svg" alt="edit" class="edit-img" onclick="editTitle()">
-	<img src="./svg/remove.svg" alt="remove" class="remove-img" 
-	onclick="deleteTodo()">
+	<img src="./svg/edit.svg" alt="edit" class="edit-img" 
+	onclick="editTitle(${todoId})">
+	<img src="./svg/remove.svg" alt="remove" class="remove-img"
+	onclick="deleteTodo(${todoId})">
 	</span>
 	</div>
 	<hr>
@@ -13,32 +33,20 @@ const generateTodoHeader = function(title) {
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
 	<img src="./svg/plus.svg" alt="add" class="add-icon" 
-	onclick="createNewItem()">
+	onclick="createNewItem(${todoId})">
 	</div>
 	`;
   return todoHeader;
 };
 
-const generateItemTemplate = function(html, item) {
-  const previousHtml = html;
-  const { task, taskId, isDone } = item;
-  const newHtml = `
-	<div class="item" id="${taskId}">
-	<p><input type="checkbox" name="checkbox"
-	 class="checkbox" onclick="changeItemStatus()" ${isDone ? 'checked' : ''}>
-	<span onfocusout="modifyItem()">${task}</span>
-	</p><div><img src="./svg/edit.svg" alt="edit" onclick="editItem()">
-	<img src="./svg/remove.svg" alt="delete" onclick="deleteItem()"></div>
-	</div>
-	`;
-  return previousHtml + newHtml;
-};
-
 const generateTodo = function(todo) {
   const { title, items, todoId } = todo;
-  const todoHeader = generateTodoHeader(title);
-  const itemContainer = items.reduce(generateItemTemplate, '');
-  const todoContainer = `<div class="todo" id="${todoId}">
+  const todoHeader = generateTodoHeader(title, todoId);
+  const itemContainer = items.reduce(
+    generateItemTemplate.bind(null, todoId),
+    ''
+  );
+  const todoContainer = `<div class="todo" id="todo-${todoId}">
 	<div>${todoHeader}</div>
 	<div class="item-container">${itemContainer}</div></div>`;
   return todoContainer;
@@ -70,56 +78,51 @@ const createNewTodo = function() {
   input.value = '';
 };
 
-const deleteTodo = function() {
-  const [, , , , todo] = event.path;
-  sendXHR('POST', 'deleteTodo', `todoId=${todo.id}`);
+const deleteTodo = function(todoId) {
+  sendXHR('POST', 'deleteTodo', `todoId=${todoId}`);
 };
 
-const createNewItem = function() {
+const createNewItem = function(todoId) {
   const input = event.target.previousElementSibling;
-  const [, , , todo] = event.path;
-  const message = `task=${input.value}&todoId=${todo.id}`;
+  const message = `task=${input.value}&todoId=${todoId}`;
   input.value && sendXHR('POST', 'createNewItem', message);
   input.value = '';
 };
 
-const deleteItem = function() {
-  const [, , item, , todo] = event.path;
-  sendXHR('POST', 'deleteItem', `taskId=${item.id}&todoId=${todo.id}`);
+const deleteItem = function(todoId, taskId) {
+  sendXHR('POST', 'deleteItem', `taskId=${taskId}&todoId=${todoId}`);
 };
 
-const changeItemStatus = function() {
-  const [, , item, , todo] = event.path;
-  const message = `taskId=${item.id}&todoId=${todo.id}`;
-  sendXHR('POST', changeItemStatus, message);
+const changeItemStatus = function(todoId, taskId) {
+  const message = `taskId=${taskId}&todoId=${todoId}`;
+  sendXHR('POST', 'changeItemStatus', message);
 };
 
-const editTitle = function() {
-  const [, , taskAdder] = event.path;
-  const title = taskAdder.querySelector('h2');
+const editTitle = function(todoId) {
+  const title = document.querySelector(`#todo-${todoId} .todo-header h2`);
   title.setAttribute('contenteditable', true);
   title.focus();
 };
 
-const renameTitle = function() {
-  const [, taskAdder, , todo] = event.path;
-  const newTitle = taskAdder.querySelector('h2').innerText;
-  const message = `todoId=${todo.id}&newTitle=${newTitle}`;
-  sendXHR('POST', renameTitle, message);
+const renameTitle = function(todoId) {
+  const newTitle = document.querySelector(`#todo-${todoId} .todo-header h2`)
+    .innerText;
+
+  const message = `todoId=${todoId}&newTitle=${newTitle}`;
+  sendXHR('POST', 'renameTitle', message);
 };
 
-const editItem = function() {
-  const [, , taskAdder] = event.path;
-  const title = taskAdder.querySelector('span');
+const editItem = function(todoId, taskId) {
+  const title = document.querySelector(`#task-${todoId}_${taskId} p span`);
   title.setAttribute('contenteditable', true);
   title.focus();
 };
 
-const modifyItem = function() {
-  const [span, , task, , todo] = event.path;
-  const newTask = span.innerText;
-  const message = `todoId=${todo.id}&taskId=${task.id}&newTask=${newTask}`;
-  sendXHR('POST', modifyItem, message);
+const modifyItem = function(todoId, taskId) {
+  const newTask = document.querySelector(`#task-${todoId}_${taskId} p span`)
+    .innerText;
+  const message = `todoId=${todoId}&taskId=${taskId}&newTask=${newTask}`;
+  sendXHR('POST', 'modifyItem', message);
 };
 
 const searchByTitle = function(calledOn) {
