@@ -1,6 +1,6 @@
-const generateItemAdder = function(title) {
-  const itemAdder = `
-	<div class="task-header">
+const generateTodoHeader = function(title) {
+  const todoHeader = `
+	<div class="todo-header">
 	<h2 onfocusout="renameTitle()">${title}</h2>
 	<span>
 	<img src="./svg/edit.svg" alt="edit" class="edit-img" onclick="editTitle()">
@@ -9,17 +9,17 @@ const generateItemAdder = function(title) {
 	</span>
 	</div>
 	<hr>
-	<div class="itemAdder">
+	<div class="item-adder">
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
 	<img src="./svg/plus.svg" alt="add" class="add-icon" 
 	onclick="createNewItem()">
 	</div>
 	`;
-  return itemAdder;
+  return todoHeader;
 };
 
-const generateItem = function(html, task) {
+const generateItemTemplate = function(html, task) {
   const previousHtml = html;
   const { item, id, isDone } = task;
   const newHtml = `
@@ -36,18 +36,27 @@ const generateItem = function(html, task) {
 
 const generateTodo = function(todo) {
   const { title, items, id } = todo;
-  const itemAdder = generateItemAdder(title);
-  const generatedItems = items.reduce(generateItem, '');
+  const todoHeader = generateTodoHeader(title);
+  const itemContainer = items.reduce(generateItemTemplate, '');
   const todoContainer = `<div class="todo" id="${id}">
-	<div>${itemAdder}</div>
-	<div class="item-container">${generatedItems}</div></div>`;
+	<div>${todoHeader}</div>
+	<div class="item-container">${itemContainer}</div></div>`;
   return todoContainer;
+};
+
+let TODO_LIST = [];
+
+const showTodoList = function(todoList = TODO_LIST) {
+  const todoListContainer = document.querySelector('.todo-list-container');
+  const todo = todoList.map(generateTodo);
+  todoListContainer.innerHTML = todo.join('\n');
 };
 
 const sendXHR = function(method, url, message) {
   const request = new XMLHttpRequest();
   request.onload = function() {
-    showTodoList(JSON.parse(this.responseText));
+    TODO_LIST = JSON.parse(this.responseText);
+    showTodoList();
   };
   request.open(method, url);
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -113,10 +122,10 @@ const modifyItem = function() {
   sendXHR('POST', modifyItem, message);
 };
 
-const showTodoList = function(todoList) {
-  const todoListContainer = document.querySelector('.todo-list-container');
-  const todo = todoList.map(generateTodo);
-  todoListContainer.innerHTML = todo.join('\n');
+const searchByTitle = function(calledOn) {
+  const matcher = new RegExp(calledOn.value, 'i');
+  const matchedList = TODO_LIST.filter(todo => todo.title.match(matcher));
+  showTodoList(matchedList);
 };
 
 const load = function() {

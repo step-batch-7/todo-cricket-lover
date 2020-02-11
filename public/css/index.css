@@ -53,14 +53,14 @@ input[type='checkbox'] {
   margin: 0%;
 }
 
-.todoAdder {
+.todo-adder {
   margin-top: 40px;
   display: flex;
   flex-flow: row wrap;
   border-collapse: collapse;
 }
 
-.itemAdder {
+.item-adder {
   display: flex;
   flex-flow: row wrap;
   border-collapse: collapse;
@@ -79,7 +79,7 @@ input[type='checkbox'] {
   justify-content: flex-start;
 }
 
-.task-header {
+.todo-header {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -98,7 +98,7 @@ input[type='checkbox'] {
   transform: scale(1.3);
 }
 
-.task-header h2,
+.todo-header h2,
 .item span {
   outline: none;
 }
@@ -119,4 +119,13 @@ input[type='checkbox'] {
 .add-icon {
 	width: 20px;
 	border: 1px solid lightgray;
+}
+
+.search-bars {
+	margin: 1% auto;
+}
+
+.title-search {
+	width: 30%;
+	height: 2vw;
 }
