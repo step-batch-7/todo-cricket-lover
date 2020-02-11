@@ -4,6 +4,18 @@ const querystring = require('querystring');
 const { App } = require('./app');
 const { TODOS_PATH } = require('./config');
 const CONTENT_TYPES = require('./public/lib/mimeTypes');
+const INDENT = 2;
+
+const getTodoList = function() {
+  if (fs.existsSync(TODOS_PATH)) {
+    return JSON.parse(fs.readFileSync(TODOS_PATH, 'utf8'));
+  }
+  return [];
+};
+
+const writeToTodoList = function(todoList) {
+  fs.writeFileSync(TODOS_PATH, JSON.stringify(todoList, null, INDENT));
+};
 
 const readBody = function(req, res, next) {
   let userDetails = '';
@@ -16,8 +28,10 @@ const readBody = function(req, res, next) {
   });
 };
 
+const ID = 1;
+
 const serveTodoList = function(req, res) {
-  fs.writeFileSync(TODOS_PATH, JSON.stringify(todoList));
+  const todoList = getTodoList();
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(todoList));
@@ -37,71 +51,75 @@ const serveStaticPage = function(req, res, next) {
   res.end(fileContent);
 };
 
-const getTodoList = function() {
-  if (fs.existsSync(TODOS_PATH)) {
-    return JSON.parse(fs.readFileSync(TODOS_PATH, 'utf8'));
-  }
-  return [];
-};
-
-const todoList = getTodoList();
-const ID = 1;
-
-const createNewTodo = function(req, res) {
+const createNewTodo = function(req, res, next) {
+  const todoList = getTodoList();
   const { title } = req.body;
   const lastTodo = todoList[todoList.length - ID];
-  const id = lastTodo ? lastTodo.id + ID : ID;
-  const todo = { title, id, items: [] };
+  const todoId = lastTodo ? lastTodo.todoId + ID : ID;
+  const todo = { title, todoId, items: [] };
   todoList.push(todo);
-  serveTodoList(req, res);
+  writeToTodoList(todoList);
+  next();
 };
 
-const deleteTodo = function(req, res) {
+const deleteTodo = function(req, res, next) {
+  const todoList = getTodoList();
   const { todoId } = req.body;
-  const todoIndex = todoList.findIndex(todo => todo.id === +todoId);
+  const todoIndex = todoList.findIndex(todo => todo.todoId === +todoId);
   todoList.splice(todoIndex, ID);
-  serveTodoList(req, res);
+  writeToTodoList(todoList);
+  next();
 };
 
-const createNewItem = function(req, res) {
-  const { item, todoId } = req.body;
-  const todo = todoList.find(todo => todo.id === +todoId);
+const createNewItem = function(req, res, next) {
+  const todoList = getTodoList();
+  const { task, todoId } = req.body;
+  const todo = todoList.find(todo => todo.todoId === +todoId);
   const { items } = todo;
   const lastItem = items[items.length - ID];
-  const itemId = lastItem ? lastItem.id + ID : ID;
-  items.push({ item, id: itemId, isDone: false });
-  serveTodoList(req, res);
+  const taskId = lastItem ? lastItem.taskId + ID : ID;
+  items.push({ task, taskId, isDone: false });
+  writeToTodoList(todoList);
+  next();
 };
 
-const deleteItem = function(req, res) {
+const deleteItem = function(req, res, next) {
+  const todoList = getTodoList();
   const { taskId, todoId } = req.body;
-  const { items } = todoList.find(todo => todo.id === +todoId);
-  const itemIndex = items.findIndex(item => item.id === +taskId);
+  const { items } = todoList.find(todo => todo.todoId === +todoId);
+  const itemIndex = items.findIndex(item => item.taskId === +taskId);
   items.splice(itemIndex, ID);
-  serveTodoList(req, res);
+  writeToTodoList(todoList);
+  next();
 };
 
-const changeItemStatus = function(req, res) {
+const changeItemStatus = function(req, res, next) {
+  const todoList = getTodoList();
   const { taskId, todoId } = req.body;
-  const todo = todoList.find(todo => todo.id === +todoId);
-  const item = todo.items.find(item => item.id === +taskId);
+  const todo = todoList.find(todo => todo.todoId === +todoId);
+  const item = todo.items.find(item => item.taskId === +taskId);
   item.isDone = !item.isDone;
-  serveTodoList(req, res);
+  writeToTodoList(todoList);
+  next();
 };
 
-const renameTitle = function(req, res) {
+const renameTitle = function(req, res, next) {
+  const todoList = getTodoList();
   const { todoId, newTitle } = req.body;
-  const todo = todoList.find(todo => todo.id === +todoId);
+  const todo = todoList.find(todo => todo.todoId === +todoId);
   todo.title = newTitle;
-  serveTodoList(req, res);
+  writeToTodoList(todoList);
+  next();
 };
 
-const modifyItem = function(req, res) {
-  const { todoId, taskId, newItem } = req.body;
-  const todo = todoList.find(todo => todo.id === +todoId);
-  const task = todo.items.find(item => item.id === +taskId);
-  task.item = newItem;
-  serveTodoList(req, res);
+const modifyItem = function(req, res, next) {
+  const todoList = getTodoList();
+  const { todoId, taskId, newTask } = req.body;
+  const todo = todoList.find(todo => todo.todoId === +todoId);
+  const item = todo.items.find(item => item.taskId === +taskId);
+  item.task = newTask;
+  writeToTodoList(todoList);
+  next();
 };
 
 const serveBadRequestPage = function(req, res) {
@@ -126,6 +144,7 @@ app.post('deleteItem', deleteItem);
 app.post('changeItemStatus', changeItemStatus);
 app.post('renameTitle', renameTitle);
 app.post('modifyItem', modifyItem);
+app.post('', serveTodoList);
 app.get('', serveBadRequestPage);
 app.post('', serveBadRequestPage);
 app.use(methodNotAllowed);

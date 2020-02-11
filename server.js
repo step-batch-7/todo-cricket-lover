@@ -5,7 +5,9 @@ const { app } = require('./handler');
 const main = function() {
   const port = 9000;
   const server = new Server(app.serve.bind(app));
-  server.on('listening', () => process.stdout.write('server is listening'));
-  server.listen(port);
+
+  server.listen(port, () => {
+    process.stdout.write(`server is listening at ${server.address().port}`);
+  });
 };
 main();

@@ -19,14 +19,14 @@ const generateTodoHeader = function(title) {
   return todoHeader;
 };
 
-const generateItemTemplate = function(html, task) {
+const generateItemTemplate = function(html, item) {
   const previousHtml = html;
-  const { item, id, isDone } = task;
+  const { task, taskId, isDone } = item;
   const newHtml = `
-	<div class="item" id="${id}">
+	<div class="item" id="${taskId}">
 	<p><input type="checkbox" name="checkbox"
 	 class="checkbox" onclick="changeItemStatus()" ${isDone ? 'checked' : ''}>
-	<span onfocusout="modifyItem()">${item}</span>
+	<span onfocusout="modifyItem()">${task}</span>
 	</p><div><img src="./svg/edit.svg" alt="edit" onclick="editItem()">
 	<img src="./svg/remove.svg" alt="delete" onclick="deleteItem()"></div>
 	</div>
@@ -35,10 +35,10 @@ const generateItemTemplate = function(html, task) {
 };
 
 const generateTodo = function(todo) {
-  const { title, items, id } = todo;
+  const { title, items, todoId } = todo;
   const todoHeader = generateTodoHeader(title);
   const itemContainer = items.reduce(generateItemTemplate, '');
-  const todoContainer = `<div class="todo" id="${id}">
+  const todoContainer = `<div class="todo" id="${todoId}">
 	<div>${todoHeader}</div>
 	<div class="item-container">${itemContainer}</div></div>`;
   return todoContainer;
@@ -78,7 +78,7 @@ const deleteTodo = function() {
 const createNewItem = function() {
   const input = event.target.previousElementSibling;
   const [, , , todo] = event.path;
-  const message = `item=${input.value}&todoId=${todo.id}`;
+  const message = `task=${input.value}&todoId=${todo.id}`;
   input.value && sendXHR('POST', 'createNewItem', message);
   input.value = '';
 };
@@ -117,8 +117,8 @@ const editItem = function() {
 
 const modifyItem = function() {
   const [span, , task, , todo] = event.path;
-  const newItem = span.innerText;
-  const message = `todoId=${todo.id}&taskId=${task.id}&newItem=${newItem}`;
+  const newTask = span.innerText;
+  const message = `todoId=${todo.id}&taskId=${task.id}&newTask=${newTask}`;
   sendXHR('POST', modifyItem, message);
 };
 
@@ -135,7 +135,7 @@ const searchByTask = function(calledOn) {
   }
   const matcher = new RegExp(calledOn.value, 'i');
   const matchedList = TODO_LIST.filter(todo =>
-    todo.items.some(item => item.item.match(matcher))
+    todo.items.some(item => item.task.match(matcher))
   );
   showTodoList(matchedList);
 };
