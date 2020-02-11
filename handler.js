@@ -9,10 +9,9 @@ const readBody = function(req, res, next) {
   let userDetails = '';
   req.on('data', chunk => {
     userDetails += chunk;
-    return userDetails;
   });
   req.on('end', () => {
-    req.body = userDetails;
+    req.body = querystring.parse(userDetails);
     next();
   });
 };
@@ -49,23 +48,23 @@ const todoList = getTodoList();
 const ID = 1;
 
 const createNewTodo = function(req, res) {
-  const { title } = querystring.parse(req.body);
+  const { title } = req.body;
   const lastTodo = todoList[todoList.length - ID];
   const id = lastTodo ? lastTodo.id + ID : ID;
-  const todo = { title, items: [], id };
+  const todo = { title, id, items: [] };
   todoList.push(todo);
   serveTodoList(req, res);
 };
 
 const deleteTodo = function(req, res) {
-  const { todoId } = querystring.parse(req.body);
+  const { todoId } = req.body;
   const todoIndex = todoList.findIndex(todo => todo.id === +todoId);
   todoList.splice(todoIndex, ID);
   serveTodoList(req, res);
 };
 
 const createNewItem = function(req, res) {
-  const { item, todoId } = querystring.parse(req.body);
+  const { item, todoId } = req.body;
   const todo = todoList.find(todo => todo.id === +todoId);
   const { items } = todo;
   const lastItem = items[items.length - ID];
@@ -75,7 +74,7 @@ const createNewItem = function(req, res) {
 };
 
 const deleteItem = function(req, res) {
-  const { taskId, todoId } = querystring.parse(req.body);
+  const { taskId, todoId } = req.body;
   const { items } = todoList.find(todo => todo.id === +todoId);
   const itemIndex = items.findIndex(item => item.id === +taskId);
   items.splice(itemIndex, ID);
@@ -83,7 +82,7 @@ const deleteItem = function(req, res) {
 };
 
 const changeItemStatus = function(req, res) {
-  const { taskId, todoId } = querystring.parse(req.body);
+  const { taskId, todoId } = req.body;
   const todo = todoList.find(todo => todo.id === +todoId);
   const item = todo.items.find(item => item.id === +taskId);
   item.isDone = !item.isDone;
@@ -91,14 +90,14 @@ const changeItemStatus = function(req, res) {
 };
 
 const renameTitle = function(req, res) {
-  const { todoId, newTitle } = querystring.parse(req.body);
+  const { todoId, newTitle } = req.body;
   const todo = todoList.find(todo => todo.id === +todoId);
   todo.title = newTitle;
   serveTodoList(req, res);
 };
 
 const modifyItem = function(req, res) {
-  const { todoId, taskId, newItem } = querystring.parse(req.body);
+  const { todoId, taskId, newItem } = req.body;
   const todo = todoList.find(todo => todo.id === +todoId);
   const task = todo.items.find(item => item.id === +taskId);
   task.item = newItem;

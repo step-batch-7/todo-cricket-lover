@@ -1,5 +1,4 @@
-const generateItemAdder = function(todo) {
-  const { title } = todo;
+const generateItemAdder = function(title) {
   const itemAdder = `
 	<div class="task-header">
 	<h2 onfocusout="renameTitle()">${title}</h2>
@@ -36,8 +35,8 @@ const generateItem = function(html, task) {
 };
 
 const generateTodo = function(todo) {
-  const { items, id } = todo;
-  const itemAdder = generateItemAdder(todo);
+  const { title, items, id } = todo;
+  const itemAdder = generateItemAdder(title);
   const generatedItems = items.reduce(generateItem, '');
   const todoContainer = `<div class="todo" id="${id}">
 	<div>${itemAdder}</div>
@@ -45,10 +44,10 @@ const generateTodo = function(todo) {
   return todoContainer;
 };
 
-const sendXHR = function(method, url, message, callback) {
+const sendXHR = function(method, url, message) {
   const request = new XMLHttpRequest();
   request.onload = function() {
-    callback(JSON.parse(this.responseText));
+    showTodoList(JSON.parse(this.responseText));
   };
   request.open(method, url);
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -58,37 +57,32 @@ const sendXHR = function(method, url, message, callback) {
 const createNewTodo = function() {
   const input = event.target.previousElementSibling;
   const message = `title=${input.value}`;
-  input.value && sendXHR('POST', 'createNewTodo', message, showTodoList);
+  input.value && sendXHR('POST', 'createNewTodo', message);
   input.value = '';
 };
 
 const deleteTodo = function() {
   const [, , , , todo] = event.path;
-  sendXHR('POST', 'deleteTodo', `todoId=${todo.id}`, showTodoList);
+  sendXHR('POST', 'deleteTodo', `todoId=${todo.id}`);
 };
 
 const createNewItem = function() {
   const input = event.target.previousElementSibling;
   const [, , , todo] = event.path;
   const message = `item=${input.value}&todoId=${todo.id}`;
-  input.value && sendXHR('POST', 'createNewItem', message, showTodoList);
+  input.value && sendXHR('POST', 'createNewItem', message);
   input.value = '';
 };
 
 const deleteItem = function() {
   const [, , item, , todo] = event.path;
-  sendXHR(
-    'POST',
-    'deleteItem',
-    `taskId=${item.id}&todoId=${todo.id}`,
-    showTodoList
-  );
+  sendXHR('POST', 'deleteItem', `taskId=${item.id}&todoId=${todo.id}`);
 };
 
 const changeItemStatus = function() {
   const [, , item, , todo] = event.path;
   const message = `taskId=${item.id}&todoId=${todo.id}`;
-  sendXHR('POST', changeItemStatus, message, showTodoList);
+  sendXHR('POST', changeItemStatus, message);
 };
 
 const editTitle = function() {
@@ -102,7 +96,7 @@ const renameTitle = function() {
   const [, taskAdder, , todo] = event.path;
   const newTitle = taskAdder.querySelector('h2').innerText;
   const message = `todoId=${todo.id}&newTitle=${newTitle}`;
-  sendXHR('POST', renameTitle, message, showTodoList);
+  sendXHR('POST', renameTitle, message);
 };
 
 const editItem = function() {
@@ -116,17 +110,17 @@ const modifyItem = function() {
   const [span, , task, , todo] = event.path;
   const newItem = span.innerText;
   const message = `todoId=${todo.id}&taskId=${task.id}&newItem=${newItem}`;
-  sendXHR('POST', modifyItem, message, showTodoList);
+  sendXHR('POST', modifyItem, message);
 };
 
 const showTodoList = function(todoList) {
   const todoListContainer = document.querySelector('.todo-list-container');
   const todo = todoList.map(generateTodo);
-  todoListContainer.innerHTML = todo.join('');
+  todoListContainer.innerHTML = todo.join('\n');
 };
 
 const load = function() {
-  sendXHR('GET', 'todoList', '', showTodoList);
+  sendXHR('GET', 'todoList', '');
 };
 
 window.onload = load;
