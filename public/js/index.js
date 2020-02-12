@@ -8,9 +8,9 @@ const generateItemTemplate = function(todoId, html, item) {
 	class="checkbox" onclick="changeItemStatus(${todoId}, ${taskId})" 
 	${checkStat}>
 	<span onfocusout="modifyItem(${todoId}, ${taskId})">${task}</span>
-	</p><div><img src="./svg/edit.svg" alt="edit" 
+	</p><div><img src="./images/edit.svg" alt="edit" 
 	onclick="editItem(${todoId}, ${taskId})">
-	<img src="./svg/remove.svg" alt="delete" 
+	<img src="./images/remove.svg" alt="delete" 
 	onclick="deleteItem(${todoId}, ${taskId})"></div>
 	</div>
 	`;
@@ -22,9 +22,9 @@ const generateTodoHeader = function(title, todoId) {
 	<div class="todo-header">
 	<h2 onfocusout="renameTitle(${todoId})">${title}</h2>
 	<span>
-	<img src="./svg/edit.svg" alt="edit" class="edit-img" 
+	<img src="./images/edit.svg" alt="edit" class="edit-img" 
 	onclick="editTitle(${todoId})">
-	<img src="./svg/remove.svg" alt="remove" class="remove-img"
+	<img src="./images/remove.svg" alt="remove" class="remove-img"
 	onclick="deleteTodo(${todoId})">
 	</span>
 	</div>
@@ -32,7 +32,7 @@ const generateTodoHeader = function(title, todoId) {
 	<div class="item-adder">
 	<input type="text" name="add item" class="addItem"
 	placeholder="Enter your item here">
-	<img src="./svg/plus.svg" alt="add" class="add-icon" 
+	<img src="./images/plus.svg" alt="add" class="add-icon" 
 	onclick="createNewItem(${todoId})">
 	</div>
 	`;
