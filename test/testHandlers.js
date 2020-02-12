@@ -43,7 +43,7 @@ describe('POST', function() {
   context('/deleteTodo', function() {
     it('should delete todo from index page', function(done) {
       request(app.serve.bind(app))
-        .post('')
+        .post('/deleteTodo')
         .send('todoId=1')
         .expect(200, done);
     });
