@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 const request = require('supertest');
 const fs = require('fs');
-const { app } = require('../handler');
+const { app } = require('../lib/handler');
 
 describe('GET request', function() {
   it('should get index.html when the path is /', function(done) {

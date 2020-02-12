@@ -122,7 +122,6 @@ input[type='checkbox'] {
 }
 
 .search-bars {
-  /* border: 1px solid; */
   display: flex;
   justify-content: space-between;
   margin: 1% auto;

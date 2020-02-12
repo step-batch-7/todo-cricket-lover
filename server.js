@@ -1,6 +1,6 @@
 'use strict';
 const { Server } = require('http');
-const { app } = require('./handler');
+const { app } = require('./lib/handler');
 
 const main = function() {
   const port = 9000;
