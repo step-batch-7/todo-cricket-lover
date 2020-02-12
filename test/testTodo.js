@@ -9,6 +9,10 @@ describe('Todo', function() {
     todo = new Todo('someTitle', 3);
   });
 
+  afterEach(function() {
+    sinon.restore();
+  });
+
   context('.editTitle', function() {
     it('should edit the title of the todo', function() {
       todo.editTitle('newTitle');
@@ -57,10 +61,6 @@ describe('Todo', function() {
       sinon.replace(Array.prototype, 'splice', spliceSpy);
     });
 
-    afterEach(function() {
-      sinon.restore();
-    });
-
     it('should delete the item of given id if exists', function() {
       todo.addItem('someTask');
       todo.deleteItem(0);
@@ -77,18 +77,38 @@ describe('Todo', function() {
   });
 
   context('.editItem', function() {
-    it('should edit the task of the given item ', function() {
+    let spy0, spy1;
+    beforeEach(function() {
+      spy0 = sinon.spy();
+      spy1 = sinon.spy();
       todo.addItem('someTask');
+      todo.addItem('anotherTask');
+      sinon.replace(todo.items[0], 'editTask', spy0);
+      sinon.replace(todo.items[1], 'editTask', spy1);
+    });
+
+    it('should edit the task of the given item only', function() {
       todo.editItem(0, 'newTask');
-      assert.strictEqual(todo.items[0].task, 'newTask');
+      sinon.assert.calledOnce(spy0);
+      sinon.assert.notCalled(spy1);
     });
   });
 
   context('.toggleItemStatus', function() {
-    it('should toggle the status of the given item', function() {
+    let spy0, spy1;
+    beforeEach(function() {
+      spy0 = sinon.spy();
+      spy1 = sinon.spy();
       todo.addItem('someTask');
-      todo.toggleItemStatus(0);
-      assert.isTrue(todo.items[0].isDone);
+      todo.addItem('anotherTask');
+      sinon.replace(todo.items[0], 'toggleStatus', spy0);
+      sinon.replace(todo.items[1], 'toggleStatus', spy1);
+    });
+
+    it('should toggle the status of the given item only', function() {
+      todo.toggleItemStatus(1);
+      sinon.assert.notCalled(spy0);
+      sinon.assert.calledOnce(spy1);
     });
   });
 
