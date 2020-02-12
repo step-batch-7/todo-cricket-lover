@@ -4,9 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "export DATA_STORE=test/resources/todo.json; nyc mocha",
-		"start": "export DATA_STORE=data/todo.json; nodemon server.js",
-		"eslint": "eslint . --ext .js",
-		"preCommit": "npm test && npm run eslint"
+    "start": "export DATA_STORE=data/todo.json; nodemon server.js",
+    "eslint": "eslint . --ext .js",
+    "preCommit": "npm test && npm run eslint"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/step-batch-7/todo-cricket-lover#readme",
   "description": "",
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2",
     "sinon": "^8.1.1",
