@@ -38,6 +38,15 @@ describe('Todo', function() {
       todo.addItem('anotherTask');
       assert.strictEqual(todo.items[1].taskId, 1);
     });
+
+    it('should generate the item accordingly when id and isDone are given', function() {
+      todo.addItem('someTask', 2, true);
+      assert.deepStrictEqual(todo.items[0], {
+        task: 'someTask',
+        taskId: 2,
+        isDone: true
+      });
+    });
   });
 
   context('.deleteItem', function() {
@@ -62,7 +71,45 @@ describe('Todo', function() {
     it('should not do anything if the item does not exist', function() {
       todo.addItem('someTask');
       todo.deleteItem(1);
-      sinon.assert.notCalled(spliceSpy);
+      sinon.assert.calledWith(spliceSpy, Infinity, 1);
+      sinon.assert.calledOn(spliceSpy, todo.items);
+    });
+  });
+
+  context('.editItem', function() {
+    it('should edit the task of the given item ', function() {
+      todo.addItem('someTask');
+      todo.editItem(0, 'newTask');
+      assert.strictEqual(todo.items[0].task, 'newTask');
+    });
+  });
+
+  context('.toggleItemStatus', function() {
+    it('should toggle the status of the given item', function() {
+      todo.addItem('someTask');
+      todo.toggleItemStatus(0);
+      assert.isTrue(todo.items[0].isDone);
+    });
+  });
+
+  context('Todo.load', function() {
+    let todoObject;
+    beforeEach(function() {
+      todoObject = {
+        title: 'someTitle',
+        todoId: 1,
+        items: [{ task: 'someTask', taskId: 2, isDone: false }]
+      };
+      todo = Todo.load(todoObject);
+    });
+
+    it('should load an instance of Todo and Item', function() {
+      assert.isTrue(todo instanceof Todo);
+      assert.isTrue(todo.items[0] instanceof Item);
+    });
+
+    it('should create a todo out of actual given data', function() {
+      assert.deepStrictEqual(todo, todoObject);
     });
   });
 });
