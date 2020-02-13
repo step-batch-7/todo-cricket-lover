@@ -133,7 +133,7 @@ describe('TodoList', function() {
     it('should add an item to the given todo only', function() {
       todoList.addItem(1, 'newTask');
       todoList.editTask(1, 0, 'editedTask');
-      sinon.assert.calledWithExactly(spy1, 'editedTask', 0);
+      sinon.assert.calledWithExactly(spy1, 0, 'editedTask');
       sinon.assert.notCalled(spy0);
     });
   });
