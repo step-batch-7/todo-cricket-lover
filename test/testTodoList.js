@@ -97,4 +97,24 @@ describe('TodoList', function() {
       sinon.assert.notCalled(spy1);
     });
   });
+
+  context('.deleteItem', function() {
+    let spy0, spy1;
+
+    beforeEach(function() {
+      todoList.addTodo('someTodo');
+      todoList.addTodo('otherTodo');
+      spy0 = sinon.spy();
+      spy1 = sinon.spy();
+      sinon.replace(todoList.todos[0], 'deleteItem', spy0);
+      sinon.replace(todoList.todos[1], 'deleteItem', spy1);
+    });
+
+    it('should add an item to the given todo only', function() {
+      todoList.addItem('newTask', 0);
+      todoList.deleteItem(0, 0);
+      sinon.assert.calledWithExactly(spy0, 0);
+      sinon.assert.notCalled(spy1);
+    });
+  });
 });
