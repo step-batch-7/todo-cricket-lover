@@ -157,4 +157,42 @@ describe('TodoList', function() {
       sinon.assert.notCalled(spy0);
     });
   });
+
+  describe('TodoList.load', function() {
+    let todoList;
+    const todos = [
+      {
+        title: 'picture',
+        todoId: 1,
+        items: [
+          {
+            task: 'fksahogd',
+            taskId: 1,
+            isDone: false
+          }
+        ]
+      },
+      {
+        title: 'today',
+        todoId: 2,
+        items: []
+      }
+    ];
+
+    beforeEach(function() {
+      todoList = TodoList.load(todos);
+    });
+
+    it('should return an instance of TodoList', function() {
+      assert.isTrue(todoList instanceof TodoList);
+    });
+
+    it('should load all the todos into todoList', function() {
+      assert.strictEqual(todoList.todos.length, todos.length);
+    });
+
+    it('loaded todos should be instances of Todo', function() {
+      assert.isTrue(todoList.todos.every(todo => todo instanceof Todo));
+    });
+  });
 });
