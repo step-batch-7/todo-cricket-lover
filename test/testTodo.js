@@ -54,61 +54,42 @@ describe('Todo', function() {
   });
 
   context('.deleteItem', function() {
-    let spliceSpy;
-
-    beforeEach(function() {
-      spliceSpy = sinon.spy();
-      sinon.replace(Array.prototype, 'splice', spliceSpy);
-    });
-
     it('should delete the item of given id if exists', function() {
       todo.addItem('someTask');
-      todo.deleteItem(0);
-      sinon.assert.calledWithExactly(spliceSpy, 0, 1);
-      sinon.assert.calledOn(spliceSpy, todo.items);
+      assert.deepStrictEqual(todo.deleteItem(0), [
+        {
+          taskId: 0,
+          task: 'someTask',
+          isDone: false
+        }
+      ]);
     });
 
     it('should not do anything if the item does not exist', function() {
       todo.addItem('someTask');
-      todo.deleteItem(1);
-      sinon.assert.calledWith(spliceSpy, Infinity, 1);
-      sinon.assert.calledOn(spliceSpy, todo.items);
+      assert.isUndefined(todo.deleteItem(1));
     });
   });
 
   context('.editItem', function() {
-    let spy0, spy1;
-    beforeEach(function() {
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
+    it('should edit the task of the given item if exists', function() {
       todo.addItem('someTask');
-      todo.addItem('anotherTask');
-      sinon.replace(todo.items[0], 'editTask', spy0);
-      sinon.replace(todo.items[1], 'editTask', spy1);
+      assert.isTrue(todo.editItem(0, 'newTask'));
     });
 
-    it('should edit the task of the given item only', function() {
-      todo.editItem(0, 'newTask');
-      sinon.assert.calledOnce(spy0);
-      sinon.assert.notCalled(spy1);
+    it('should return false if item is not found', function() {
+      assert.isFalse(todo.editItem(0, 'newTask'));
     });
   });
 
   context('.toggleItemStatus', function() {
-    let spy0, spy1;
-    beforeEach(function() {
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
+    it('should toggle the status of the given item if exists', function() {
       todo.addItem('someTask');
-      todo.addItem('anotherTask');
-      sinon.replace(todo.items[0], 'toggleStatus', spy0);
-      sinon.replace(todo.items[1], 'toggleStatus', spy1);
+      assert.isTrue(todo.toggleItemStatus(0));
     });
 
-    it('should toggle the status of the given item only', function() {
-      todo.toggleItemStatus(1);
-      sinon.assert.notCalled(spy0);
-      sinon.assert.calledOnce(spy1);
+    it('should return false if item is not found', function() {
+      assert.isFalse(todo.toggleItemStatus(0));
     });
   });
 
