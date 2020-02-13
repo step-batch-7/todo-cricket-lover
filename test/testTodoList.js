@@ -9,6 +9,10 @@ describe('TodoList', function() {
     todoList = new TodoList();
   });
 
+  afterEach(function() {
+    sinon.restore();
+  });
+
   context('.addTodo', function() {
     it('should add the todo with given title to the todos', function() {
       todoList.addTodo('someTitle');
@@ -20,6 +24,7 @@ describe('TodoList', function() {
         }
       ]);
     });
+
     it('the added todo should be an instance of the Todo', function() {
       todoList.addTodo('someTitle');
       assert.isTrue(todoList.todos[0] instanceof Todo);
@@ -40,10 +45,6 @@ describe('TodoList', function() {
       sinon.replace(Array.prototype, 'splice', spliceSpy);
     });
 
-    afterEach(function() {
-      sinon.restore();
-    });
-
     it('should delete the item of given id if exists', function() {
       todoList.addTodo('someTask');
       todoList.deleteTodo(0);
@@ -56,6 +57,25 @@ describe('TodoList', function() {
       todoList.deleteTodo(2);
       sinon.assert.calledWithExactly(spliceSpy, Infinity, 1);
       sinon.assert.calledOn(spliceSpy, todoList.todos);
+    });
+  });
+
+  context('.editTitle', function() {
+    let spy0, spy1;
+
+    beforeEach(function() {
+      todoList.addTodo('someTodo');
+      todoList.addTodo('otherTodo');
+      spy0 = sinon.spy();
+      spy1 = sinon.spy();
+      sinon.replace(todoList.todos[0], 'editTitle', spy0);
+      sinon.replace(todoList.todos[1], 'editTitle', spy1);
+    });
+
+    it('should edit the title of the given todo only', function() {
+      todoList.editTitle('newTitle', 1);
+      sinon.assert.calledWithExactly(spy1, 'newTitle');
+      sinon.assert.notCalled(spy0);
     });
   });
 });
