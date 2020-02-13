@@ -38,123 +38,93 @@ describe('TodoList', function() {
   });
 
   context('.deleteTodo', function() {
-    let spliceSpy;
-
-    beforeEach(function() {
-      spliceSpy = sinon.spy();
-      sinon.replace(Array.prototype, 'splice', spliceSpy);
-    });
-
     it('should delete the item of given id if exists', function() {
-      todoList.addTodo('someTask');
-      todoList.deleteTodo(0);
-      sinon.assert.calledWithExactly(spliceSpy, 0, 1);
-      sinon.assert.calledOn(spliceSpy, todoList.todos);
+      todoList.addTodo('someTodo');
+      assert.deepStrictEqual(todoList.deleteTodo(0), [
+        { todoId: 0, title: 'someTodo', items: [] }
+      ]);
     });
 
     it('should do nothing when todo does not exist for a given id', function() {
-      todoList.addTodo('someTask');
-      todoList.deleteTodo(2);
-      sinon.assert.calledWithExactly(spliceSpy, Infinity, 1);
-      sinon.assert.calledOn(spliceSpy, todoList.todos);
+      assert.isUndefined(todoList.deleteTodo(0));
     });
   });
 
   context('.editTitle', function() {
-    let spy0, spy1;
-
-    beforeEach(function() {
-      todoList.addTodo('someTodo');
-      todoList.addTodo('otherTodo');
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
-      sinon.replace(todoList.todos[0], 'editTitle', spy0);
-      sinon.replace(todoList.todos[1], 'editTitle', spy1);
+    it('should edit the title of the given todo only', function() {
+      todoList.addTodo('someTitle');
+      assert.isTrue(todoList.editTitle(0, 'newTitle'));
     });
 
-    it('should edit the title of the given todo only', function() {
-      todoList.editTitle(1, 'newTitle');
-      sinon.assert.calledWithExactly(spy1, 'newTitle');
-      sinon.assert.notCalled(spy0);
+    it('should return false when todo is not found', function() {
+      assert.isFalse(todoList.editTitle(0, 'newTitle'));
     });
   });
 
   context('.addItem', function() {
-    let spy0, spy1;
-
-    beforeEach(function() {
+    it('should add an item to the given todo when exists', function() {
       todoList.addTodo('someTodo');
-      todoList.addTodo('otherTodo');
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
-      sinon.replace(todoList.todos[0], 'addItem', spy0);
-      sinon.replace(todoList.todos[1], 'addItem', spy1);
+      assert.isTrue(todoList.addItem(0, 'newTask'));
     });
 
-    it('should add an item to the given todo only', function() {
-      todoList.addItem(0, 'newTask');
-      sinon.assert.calledWithExactly(spy0, 'newTask');
-      sinon.assert.notCalled(spy1);
+    it('should return false when todo is not found', function() {
+      assert.isFalse(todoList.addItem(0, 'newTask'));
     });
   });
 
   context('.deleteItem', function() {
-    let spy0, spy1;
-
-    beforeEach(function() {
-      todoList.addTodo('someTodo');
-      todoList.addTodo('otherTodo');
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
-      sinon.replace(todoList.todos[0], 'deleteItem', spy0);
-      sinon.replace(todoList.todos[1], 'deleteItem', spy1);
+    it('should delete the item if it is found', function() {
+      todoList.addTodo('newTodo');
+      todoList.addItem(0, 'newTask');
+      assert.deepStrictEqual(todoList.deleteItem(0, 0), [
+        { taskId: 0, task: 'newTask', isDone: false }
+      ]);
     });
 
-    it('should add an item to the given todo only', function() {
-      todoList.addItem(0, 'newTask');
-      todoList.deleteItem(0, 0);
-      sinon.assert.calledWithExactly(spy0, 0);
-      sinon.assert.notCalled(spy1);
+    it('should do nothing if item is not found', function() {
+      todoList.addTodo('newTodo');
+      assert.isUndefined(todoList.deleteItem(0, 0));
+      assert.isUndefined(todoList.deleteItem(0, 0));
+    });
+
+    it('should do nothing if todo is not found', function() {
+      assert.isUndefined(todoList.deleteItem(0, 0));
     });
   });
 
   context('.editTask', function() {
-    let spy0, spy1;
-
-    beforeEach(function() {
-      todoList.addTodo('someTodo');
-      todoList.addTodo('otherTodo');
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
-      sinon.replace(todoList.todos[0], 'editItem', spy0);
-      sinon.replace(todoList.todos[1], 'editItem', spy1);
+    it('should edit the task if item is found', function() {
+      todoList.addTodo('newTodo');
+      todoList.addItem(0, 'newTask');
+      assert.isTrue(todoList.editTask(0, 0, 'editedTask'));
     });
 
-    it('should add an item to the given todo only', function() {
-      todoList.addItem(1, 'newTask');
-      todoList.editTask(1, 0, 'editedTask');
-      sinon.assert.calledWithExactly(spy1, 0, 'editedTask');
-      sinon.assert.notCalled(spy0);
+    it('should do nothing if item is not found', function() {
+      todoList.addTodo('newTodo');
+      assert.isFalse(todoList.editTask(0, 0, 'editedTask'));
+      assert.isFalse(todoList.editTask(0, 0, 'editedTask'));
+    });
+
+    it('should do nothing if todo is not found', function() {
+      assert.isFalse(todoList.editTask(0, 0, 'editedTask'));
     });
   });
 
   context('.toggleItemStatus', function() {
-    let spy0, spy1;
-
-    beforeEach(function() {
-      todoList.addTodo('someTodo');
-      todoList.addTodo('otherTodo');
-      spy0 = sinon.spy();
-      spy1 = sinon.spy();
-      sinon.replace(todoList.todos[0], 'toggleItemStatus', spy0);
-      sinon.replace(todoList.todos[1], 'toggleItemStatus', spy1);
+    it('should edit the task if item is found', function() {
+      todoList.addTodo('newTodo');
+      todoList.addItem(0, 'newTask');
+      assert.isTrue(todoList.toggleItemStatus(0, 0));
     });
 
-    it('should add an item to the given todo only', function() {
-      todoList.addItem(1, 'newTask');
-      todoList.toggleItemStatus(1, 0);
-      sinon.assert.calledWithExactly(spy1, 0);
-      sinon.assert.notCalled(spy0);
+    it('should do nothing if item is not found', function() {
+      todoList.addTodo('newTodo');
+      assert.isFalse(todoList.toggleItemStatus(0, 0));
+      assert.isFalse(todoList.toggleItemStatus(0, 0));
+    });
+
+    it('should do nothing if todo is not found', function() {
+      assert.isFalse(todoList.toggleItemStatus(0, 0));
     });
   });
 
