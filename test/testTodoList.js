@@ -73,7 +73,7 @@ describe('TodoList', function() {
     });
 
     it('should edit the title of the given todo only', function() {
-      todoList.editTitle('newTitle', 1);
+      todoList.editTitle(1, 'newTitle');
       sinon.assert.calledWithExactly(spy1, 'newTitle');
       sinon.assert.notCalled(spy0);
     });
@@ -92,7 +92,7 @@ describe('TodoList', function() {
     });
 
     it('should add an item to the given todo only', function() {
-      todoList.addItem('newTask', 0);
+      todoList.addItem(0, 'newTask');
       sinon.assert.calledWithExactly(spy0, 'newTask');
       sinon.assert.notCalled(spy1);
     });
@@ -111,14 +111,14 @@ describe('TodoList', function() {
     });
 
     it('should add an item to the given todo only', function() {
-      todoList.addItem('newTask', 0);
+      todoList.addItem(0, 'newTask');
       todoList.deleteItem(0, 0);
       sinon.assert.calledWithExactly(spy0, 0);
       sinon.assert.notCalled(spy1);
     });
   });
 
-  describe('.editTask', function() {
+  context('.editTask', function() {
     let spy0, spy1;
 
     beforeEach(function() {
@@ -131,8 +131,8 @@ describe('TodoList', function() {
     });
 
     it('should add an item to the given todo only', function() {
-      todoList.addItem('newTask', 1);
-      todoList.editTask('editedTask', 1, 0);
+      todoList.addItem(1, 'newTask');
+      todoList.editTask(1, 0, 'editedTask');
       sinon.assert.calledWithExactly(spy1, 'editedTask', 0);
       sinon.assert.notCalled(spy0);
     });
@@ -151,14 +151,14 @@ describe('TodoList', function() {
     });
 
     it('should add an item to the given todo only', function() {
-      todoList.addItem('newTask', 1);
+      todoList.addItem(1, 'newTask');
       todoList.toggleItemStatus(1, 0);
       sinon.assert.calledWithExactly(spy1, 0);
       sinon.assert.notCalled(spy0);
     });
   });
 
-  describe('TodoList.load', function() {
+  context('TodoList.load', function() {
     let todoList;
     const todos = [
       {
