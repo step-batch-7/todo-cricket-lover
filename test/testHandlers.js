@@ -8,9 +8,57 @@ describe('GET', function() {
     it('should get index.html when the path is /', function(done) {
       request(app)
         .get('/')
+        .expect(200)
         .expect('Content-Type', 'text/html; charset=UTF-8', done)
-        .expect(/Todo/)
-        .expect(200);
+        .expect(/Todo/);
+    });
+  });
+
+  context('/js/index.js', function() {
+    it('should get the js file', function(done) {
+      request(app)
+        .get('/js/index.js')
+        .expect(200)
+        .expect('Content-Type', 'application/javascript; charset=UTF-8')
+        .end(err => {
+          if (err) {
+            done(err);
+            return;
+          }
+          done();
+        });
+    });
+
+    context('/css/index.css', function() {
+      it('should get the css file', function(done) {
+        request(app)
+          .get('/css/index.css')
+          .expect(200)
+          .expect('Content-Type', 'text/css; charset=UTF-8')
+          .end(err => {
+            if (err) {
+              done(err);
+              return;
+            }
+            done();
+          });
+      });
+    });
+  });
+
+  context('/images/plus.svg', function() {
+    it('should get the image file', function(done) {
+      request(app)
+        .get('/images/plus.svg')
+        .expect(200)
+        .expect('Content-Type', 'image/svg+xml')
+        .end(err => {
+          if (err) {
+            done(err);
+            return;
+          }
+          done();
+        });
     });
   });
 
@@ -27,14 +75,6 @@ describe('GET', function() {
           }
           done();
         });
-    });
-  });
-
-  context('/badFile', function() {
-    it('should give not found when incorrect path is given', function(done) {
-      request(app)
-        .get('/badFile')
-        .expect(404, done);
     });
   });
 });
@@ -108,6 +148,14 @@ describe('POST', function() {
         .send('todoId=2&newItem=phani&taskId=1')
         .expect(200, done);
     });
+  });
+});
+
+describe('GET /badFile', function() {
+  it('should give not found when incorrect path is given', function(done) {
+    request(app)
+      .get('/badFile')
+      .expect(404, done);
   });
 });
 
