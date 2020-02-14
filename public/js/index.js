@@ -144,7 +144,7 @@ const searchByTask = function(calledOn) {
 };
 
 const load = function() {
-  sendXHR('GET', 'todoList', '');
+  sendXHR('GET', '/todoList', '');
 };
 
 window.onload = load;
