@@ -67,7 +67,7 @@ describe('GET', function() {
       request(app)
         .get('/todoList')
         .expect(200)
-        .expect('Content-Type', 'application/json')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .end(err => {
           if (err) {
             done(err);
