@@ -1,22 +1,38 @@
 const sinon = require('sinon');
 const request = require('supertest');
 const fs = require('fs');
-const { serveApp } = require('../lib/handler');
+const { app } = require('../lib/handler');
 
 describe('GET', function() {
   context('/', function() {
     it('should get index.html when the path is /', function(done) {
-      request(serveApp)
+      request(app)
         .get('/')
-        .expect('Content-Type', 'text/html', done)
+        .expect('Content-Type', 'text/html; charset=UTF-8', done)
         .expect(/Todo/)
         .expect(200);
     });
   });
 
+  context('/todoList', function() {
+    it('should get the todoList', function(done) {
+      request(app)
+        .get('/todoList')
+        .expect(200)
+        .expect('Content-Type', 'application/json')
+        .end(err => {
+          if (err) {
+            done(err);
+            return;
+          }
+          done();
+        });
+    });
+  });
+
   context('/badFile', function() {
     it('should give not found when incorrect path is given', function(done) {
-      request(serveApp)
+      request(app)
         .get('/badFile')
         .expect(404, done);
     });
@@ -33,7 +49,7 @@ describe('POST', function() {
 
   context('/createNewTodo', function() {
     it('should create new todo and post on index page', function(done) {
-      request(serveApp)
+      request(app)
         .post('/createNewTodo')
         .send('title=phani')
         .expect(200, done);
@@ -42,7 +58,7 @@ describe('POST', function() {
 
   context('/deleteTodo', function() {
     it('should delete todo from index page', function(done) {
-      request(serveApp)
+      request(app)
         .post('/deleteTodo')
         .send('todoId=1')
         .expect(200, done);
@@ -51,7 +67,7 @@ describe('POST', function() {
 
   context('/createNewItem', function() {
     it('should create new item in a todo and post on index page', function(done) {
-      request(serveApp)
+      request(app)
         .post('/createNewItem')
         .send('item=picture&todoId=2')
         .expect(200, done);
@@ -60,7 +76,7 @@ describe('POST', function() {
 
   context('/deleteItem', function() {
     it('should delete item in a todo from index page', function(done) {
-      request(serveApp)
+      request(app)
         .post('/deleteItem')
         .send('taskId=1&todoId=2')
         .expect(200, done);
@@ -69,7 +85,7 @@ describe('POST', function() {
 
   context('/changeItemStatus', function() {
     it('should change status of an item in a todo from index page', function(done) {
-      request(serveApp)
+      request(app)
         .post('/changeItemStatus')
         .send('taskId=1&todoId=2')
         .expect(200, done);
@@ -78,7 +94,7 @@ describe('POST', function() {
 
   context('/renameTitle', function() {
     it('should rename the title of a todo', function(done) {
-      request(serveApp)
+      request(app)
         .post('/renameTitle')
         .send('todoId=2&newTitle=phani')
         .expect(200, done);
@@ -87,7 +103,7 @@ describe('POST', function() {
 
   context('/modifyItem', function() {
     it('should modify the item of a todo', function(done) {
-      request(serveApp)
+      request(app)
         .post('/modifyItem')
         .send('todoId=2&newItem=phani&taskId=1')
         .expect(200, done);
@@ -97,7 +113,7 @@ describe('POST', function() {
 
 describe('PUT /', function() {
   it('should give method not allowed when wrong method is asked', function(done) {
-    request(serveApp)
+    request(app)
       .put('/')
       .expect(405, done);
   });
