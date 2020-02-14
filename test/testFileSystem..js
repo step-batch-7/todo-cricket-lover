@@ -49,7 +49,7 @@ describe('writeToTodoList', function() {
 
   it('should write to the file if exists', function() {
     stubbedExists.returns(true);
-    writeToTodoList({ todos: 'someText' });
+    writeToTodoList('someText');
     sinon.assert.notCalled(mkDirSpy);
     sinon.assert.calledWithExactly(
       writeSpy,
@@ -60,7 +60,7 @@ describe('writeToTodoList', function() {
 
   it('should create the directory  before writing to the file', function() {
     stubbedExists.returns(false);
-    writeToTodoList({ todos: 'someText' });
+    writeToTodoList('someText');
     sinon.assert.calledWithExactly(mkDirSpy, './data');
     sinon.assert.calledWithExactly(
       writeSpy,
