@@ -5,7 +5,7 @@ const sendXHR = function(method, url, message, onloadHandler) {
   };
 
   request.onload = function() {
-    onloadHandler(this.responseText);
+    onloadHandler(this);
   };
 
   request.open(method, url);
@@ -25,13 +25,31 @@ const signUserUp = function() {
     return;
   }
 
-  const onloadHandler = responseText => {
-    document.querySelector('.popup').innerText = responseText;
+  const onloadHandler = res => {
+    document.querySelector('.popup').innerText = res.responseText;
   };
 
   sendXHR(
     'POST',
     '/signUserUp',
+    `userName=${userName}&password=${password}`,
+    onloadHandler
+  );
+};
+
+const userLogin = function() {
+  const userName = document.querySelector('.username.login').value;
+  const password = document.querySelector('.password.login').value;
+  document.querySelector('.username.login').value = '';
+  document.querySelector('.password.login').value = '';
+
+  const onloadHandler = res => {
+    document.querySelector('.popup').innerText = res.responseText;
+  };
+
+  sendXHR(
+    'POST',
+    '/userLogin',
     `userName=${userName}&password=${password}`,
     onloadHandler
   );

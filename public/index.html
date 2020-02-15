@@ -6,7 +6,7 @@
     <title>Login</title>
   </head>
   <body>
-    <div class="popup">someText</div>
+    <div class="popup"></div>
     <div class="main-container">
       <div class="sign-up-login-container">
         <h2>LOGIN</h2>
@@ -14,16 +14,16 @@
           type="textarea"
           name="username"
           placeholder="User name"
-          class="username"
+          class="username login"
         />
         <br />
         <input
           type="password"
           name="password"
           placeholder="Password"
-          class="password"
+          class="password login"
         /><br />
-        <button class="submit-button">Login</button>
+        <button class="submit-button" onclick="userLogin()">Login</button>
       </div>
       <hr />
       <div class="sign-up-login-container">
