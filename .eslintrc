@@ -87,7 +87,7 @@
       }
     },
     {
-      "files": ["index.js"],
+      "files": ["index.js", "homePage.js"],
       "rules": {
         "no-undef": "off",
         "no-unused-vars": "off"

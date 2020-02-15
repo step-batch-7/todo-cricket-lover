@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Todo</title>
+    <link rel="stylesheet" href="./css/styleHomePage.css" />
+    <script src="./js/homePage.js"></script>
+  </head>
+  <body>
+    <h1>TODO</h1>
+    <div>
+      <div class="search-bars">
+        <input
+          type="text"
+          placeholder="Search by todo title"
+          class="title-search"
+          oninput="searchByTitle(this)"
+        />
+        <input
+          type="text"
+          placeholder="Search by task"
+          class="task-search"
+          oninput="searchByTask(this)"
+        />
+      </div>
+      <div class="todo-adder">
+        <input
+          type="text"
+          name="title"
+          size="60"
+          placeholder="Title"
+          class="addTitle"
+        />
+        <img
+          src="./images/plus.svg"
+          alt="add"
+          class="add-icon"
+          onclick="createNewTodo()"
+        />
+      </div>
+      <div class="todo-list-container"></div>
+    </div>
+  </body>
+</html>

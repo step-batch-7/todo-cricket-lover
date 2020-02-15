@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "export DATA_STORE=test/resources/todo.json; nyc mocha",
-    "start": "export DATA_STORE=data/todo.json; nodemon server.js",
+    "start": "export DATA_STORE=data/todo.json; nodemon -i 'data' server.js",
     "eslint": "eslint . --ext .js",
     "preCommit": "npm test && npm run eslint"
   },

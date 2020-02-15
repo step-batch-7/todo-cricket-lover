@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Todo</title>
     <link rel="stylesheet" href="./css/index.css" />
-    <script src="./js/index.js"></script>
+    <title>Login</title>
   </head>
   <body>
-    <h1>TODO</h1>
-    <div>
-      <div class="search-bars">
+    <div class="main-container">
+      <div class="login-container">
+        <h2>LOGIN</h2>
         <input
-          type="text"
-          placeholder="Search by todo title"
-          class="title-search"
-          oninput="searchByTitle(this)"
+          type="textarea"
+          name="username"
+          placeholder="User name"
+          class="username"
         />
+        <br />
         <input
-          type="text"
-          placeholder="Search by task"
-          class="task-search"
-          oninput="searchByTask(this)"
-        />
+          type="password"
+          name="password"
+          placeholder="Password"
+          class="password"
+        /><br />
+        <button class="login-button">Login</button>
       </div>
-      <div class="todo-adder">
+      <hr />
+      <div class="signup-container">
+        <h2>SIGN UP</h2>
         <input
           type="text"
-          name="title"
-          size="60"
-          placeholder="Title"
-          class="addTitle"
-        />
-        <img
-          src="./images/plus.svg"
-          alt="add"
-          class="add-icon"
-          onclick="createNewTodo()"
-        />
+          name="username"
+          placeholder="User name"
+          class="username"
+        /><br />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          class="password"
+        /><br />
+        <button class="signup-button">Sign up</button>
       </div>
-      <div class="todo-list-container"></div>
     </div>
   </body>
 </html>

@@ -1,134 +1,60 @@
-body {
-  font-family: sans-serif;
-}
-h1 {
-  text-align: center;
+.login-container {
   border: 1px solid gray;
-  border-radius: 6px;
-  box-shadow: gray;
-  width: 200px;
-  margin: auto;
+  padding: 2% 2% 5% 2%;
+  width: 30%;
 }
 
 h2 {
   font-weight: normal;
-  text-align: center;
-  margin: auto 0;
 }
 
-.todo {
-  background-color: white;
-  border: 1px solid darkgray;
-  margin: 20px 20px 20px 20px;
-  margin-bottom: 20px;
+.signup-container {
+  padding: 2% 2% 5% 2%;
+  border: 1px solid gray;
+  width: 30%;
+}
+
+.main-container {
+  border: 1px solid lightgray;
   border-radius: 6px;
-  font-weight: lighter;
-  padding: 10px 10px 20px 10px;
-  height: fit-content;
-}
-
-img,
-input[type='checkbox'] {
-  cursor: pointer;
-}
-
-.addTitle {
-  height: 20px;
-}
-
-.item {
-  margin: 10px 0px 0px 0px;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  height: 19px;
-  width: 98%;
+  justify-content: space-around;
+  text-align: center;
+  position: fixed;
+  top: 22.5%;
+  left: 16.5%;
+  width: 50%;
+  height: 40%;
+  padding: 3%;
 }
 
-.item:hover {
-  background-color: rgb(241, 241, 241);
+.username {
+  height: 10%;
+  width: 80%;
 }
 
-.item p {
-  margin: 0%;
+.password {
+  height: 10%;
+  width: 80%;
+  margin-bottom: 15%;
 }
 
-.todo-adder {
-  margin-top: 40px;
-  display: flex;
-  flex-flow: row wrap;
-  border-collapse: collapse;
+.login-button {
+  height: 10%;
+  width: 80%;
 }
 
-.item-adder {
-  display: flex;
-  flex-flow: row wrap;
-  border-collapse: collapse;
+.signup-button {
+  width: 80%;
+  height: 10%;
 }
 
-.addItem {
-  height: 20px;
-  width: 363px;
-}
-
-.todo-list-container {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 30px;
-  justify-content: flex-start;
-}
-
-.todo-header {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-}
-
-.item img {
-  display: none;
-  width: 18px;
-}
-
-.item:hover img {
-  display: inline;
-}
-
-.item > img:hover {
-  transform: scale(1.3);
-}
-
-.todo-header h2,
-.item span {
+.login-button:hover {
+  background-color: rgb(119, 197, 245);
   outline: none;
 }
 
-.item-container {
-  max-height: 13.5vw;
-  overflow-y: scroll;
-}
-
-.edit-img {
-  width: 30px;
-}
-
-.remove-img {
-  width: 30px;
-}
-
-.add-icon {
-  width: 20px;
-  border: 1px solid lightgray;
-}
-
-.search-bars {
-  display: flex;
-  justify-content: space-between;
-  margin: 1% auto;
-}
-
-.title-search,
-.task-search {
-  width: 30%;
-  height: 2vw;
+.signup-button:hover {
+  background-color: rgb(119, 197, 245);
+  outline: none;
 }

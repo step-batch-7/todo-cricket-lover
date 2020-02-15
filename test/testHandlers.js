@@ -10,14 +10,14 @@ describe('GET', function() {
         .get('/')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=UTF-8', done)
-        .expect(/Todo/);
+        .expect(/Login/);
     });
   });
 
-  context('/js/index.js', function() {
+  context('/js/homePage.js', function() {
     it('should get the js file', function(done) {
       request(app)
-        .get('/js/index.js')
+        .get('/js/homePage.js')
         .expect(200)
         .expect('Content-Type', 'application/javascript; charset=UTF-8')
         .end(err => {
