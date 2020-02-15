@@ -1,16 +1,20 @@
-.login-container {
-  border: 1px solid gray;
-  padding: 2% 2% 5% 2%;
-  width: 30%;
-}
-
 h2 {
   font-weight: normal;
 }
 
-.signup-container {
-  padding: 2% 2% 5% 2%;
+.popup {
+  border: 0.1vw solid;
+  width: 97.8%;
+  padding: 0.2%;
+  text-align: center;
+  height: 5%;
+  position: fixed;
+  left: 1%;
+}
+
+.sign-up-login-container {
   border: 1px solid gray;
+  padding: 2% 2% 5% 2%;
   width: 30%;
 }
 
@@ -39,22 +43,12 @@ h2 {
   margin-bottom: 15%;
 }
 
-.login-button {
+.submit-button {
   height: 10%;
   width: 80%;
 }
 
-.signup-button {
-  width: 80%;
-  height: 10%;
-}
-
-.login-button:hover {
-  background-color: rgb(119, 197, 245);
-  outline: none;
-}
-
-.signup-button:hover {
+.submit-button:hover {
   background-color: rgb(119, 197, 245);
   outline: none;
 }

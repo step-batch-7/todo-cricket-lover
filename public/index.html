@@ -2,11 +2,13 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="./css/index.css" />
+    <script src="./js/index.js"></script>
     <title>Login</title>
   </head>
   <body>
+    <div class="popup">someText</div>
     <div class="main-container">
-      <div class="login-container">
+      <div class="sign-up-login-container">
         <h2>LOGIN</h2>
         <input
           type="textarea"
@@ -21,24 +23,26 @@
           placeholder="Password"
           class="password"
         /><br />
-        <button class="login-button">Login</button>
+        <button class="submit-button">Login</button>
       </div>
       <hr />
-      <div class="signup-container">
+      <div class="sign-up-login-container">
         <h2>SIGN UP</h2>
         <input
           type="text"
           name="username"
           placeholder="User name"
-          class="username"
+          class="username sign-up"
         /><br />
         <input
           type="password"
           name="password"
           placeholder="Password"
-          class="password"
+          class="password sign-up"
         /><br />
-        <button class="signup-button">Sign up</button>
+        <button class="submit-button" onclick="signUserUp()">
+          Sign up
+        </button>
       </div>
     </div>
   </body>
