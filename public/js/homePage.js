@@ -60,11 +60,11 @@ const showTodoList = function(todoList = TODO_LIST) {
   todoListContainer.innerHTML = todo.join('\n');
 };
 
-const sendXHR = function(method, url, message) {
+const sendXHR = function(method, url, message, onloadHandler = showTodoList) {
   const request = new XMLHttpRequest();
   request.onload = function() {
-    TODO_LIST = JSON.parse(this.responseText);
-    showTodoList();
+    TODO_LIST = this.responseText && JSON.parse(this.responseText);
+    onloadHandler();
   };
   request.open(method, url);
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -141,6 +141,13 @@ const searchByTask = function(calledOn) {
     todo.items.some(item => item.task.match(matcher))
   );
   showTodoList(matchedList);
+};
+
+const logout = function() {
+  const goToLoginPage = () => {
+    document.location.href = '/';
+  };
+  sendXHR('GET', '/logout', '', goToLoginPage);
 };
 
 const load = function() {

@@ -16,6 +16,13 @@ h2 {
   margin: auto 0;
 }
 
+.logout-icon {
+  width: 2.5%;
+  position: fixed;
+  top: 1%;
+  right: 0.5%;
+}
+
 .todo {
   background-color: white;
   border: 1px solid darkgray;
