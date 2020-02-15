@@ -79,7 +79,7 @@ const createNewTodo = function() {
 };
 
 const deleteTodo = function(todoId) {
-  sendXHR('POST', 'deleteTodo', `todoId=${todoId}`);
+  sendXHR('DELETE', 'deleteTodo', `todoId=${todoId}`);
 };
 
 const createNewItem = function(todoId) {
@@ -90,7 +90,7 @@ const createNewItem = function(todoId) {
 };
 
 const deleteItem = function(todoId, taskId) {
-  sendXHR('POST', 'deleteItem', `taskId=${taskId}&todoId=${todoId}`);
+  sendXHR('DELETE', 'deleteItem', `taskId=${taskId}&todoId=${todoId}`);
 };
 
 const changeItemStatus = function(todoId, taskId) {
@@ -109,7 +109,7 @@ const renameTitle = function(todoId) {
     .innerText;
 
   const message = `todoId=${todoId}&newTitle=${newTitle}`;
-  sendXHR('POST', 'renameTitle', message);
+  sendXHR('PATCH', 'renameTitle', message);
 };
 
 const editItem = function(todoId, taskId) {
@@ -122,7 +122,7 @@ const modifyItem = function(todoId, taskId) {
   const newTask = document.querySelector(`#task-${todoId}_${taskId} p span`)
     .innerText;
   const message = `todoId=${todoId}&taskId=${taskId}&newTask=${newTask}`;
-  sendXHR('POST', 'modifyItem', message);
+  sendXHR('PATCH', 'modifyItem', message);
 };
 
 const searchByTitle = function(calledOn) {

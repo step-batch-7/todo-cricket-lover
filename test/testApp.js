@@ -79,7 +79,7 @@ describe('GET', function() {
   });
 });
 
-describe('POST', function() {
+describe('PATCH', function() {
   beforeEach(function() {
     sinon.replace(fs, 'writeFileSync', () => {});
   });
@@ -87,20 +87,64 @@ describe('POST', function() {
     sinon.restore();
   });
 
-  context('/createNewTodo', function() {
-    it('should create new todo and post on index page', function(done) {
+  context('/renameTitle', function() {
+    it('should rename the title of a todo', function(done) {
       request(app)
-        .post('/createNewTodo')
-        .send('title=phani')
+        .patch('/renameTitle')
+        .send('todoId=2&newTitle=phani')
         .expect(200, done);
     });
+  });
+
+  context('/modifyItem', function() {
+    it('should modify the item of a todo', function(done) {
+      request(app)
+        .patch('/modifyItem')
+        .send('todoId=2&newItem=phani&taskId=1')
+        .expect(200, done);
+    });
+  });
+});
+
+describe('DELETE', function() {
+  beforeEach(function() {
+    sinon.replace(fs, 'writeFileSync', () => {});
+  });
+  afterEach(function() {
+    sinon.restore();
   });
 
   context('/deleteTodo', function() {
     it('should delete todo from index page', function(done) {
       request(app)
-        .post('/deleteTodo')
+        .delete('/deleteTodo')
         .send('todoId=1')
+        .expect(200, done);
+    });
+  });
+
+  context('/deleteItem', function() {
+    it('should delete item in a todo from index page', function(done) {
+      request(app)
+        .delete('/deleteItem')
+        .send('taskId=1&todoId=2')
+        .expect(200, done);
+    });
+  });
+});
+
+describe('POST', function() {
+  beforeEach(function() {
+    sinon.replace(fs, 'writeFileSync', () => {});
+  });
+  afterEach(function() {
+    sinon.restore();
+  });
+  context('/createNewTodo', function() {
+    it('should create new todo and post on index page', function(done) {
+      request(app)
+        .post('/createNewTodo')
+        .send('title=phani')
         .expect(200, done);
     });
   });
@@ -114,38 +158,11 @@ describe('POST', function() {
     });
   });
 
-  context('/deleteItem', function() {
-    it('should delete item in a todo from index page', function(done) {
-      request(app)
-        .post('/deleteItem')
-        .send('taskId=1&todoId=2')
-        .expect(200, done);
-    });
-  });
-
   context('/changeItemStatus', function() {
     it('should change status of an item in a todo from index page', function(done) {
       request(app)
         .post('/changeItemStatus')
         .send('taskId=1&todoId=2')
-        .expect(200, done);
-    });
-  });
-
-  context('/renameTitle', function() {
-    it('should rename the title of a todo', function(done) {
-      request(app)
-        .post('/renameTitle')
-        .send('todoId=2&newTitle=phani')
-        .expect(200, done);
-    });
-  });
-
-  context('/modifyItem', function() {
-    it('should modify the item of a todo', function(done) {
-      request(app)
-        .post('/modifyItem')
-        .send('todoId=2&newItem=phani&taskId=1')
         .expect(200, done);
     });
   });
