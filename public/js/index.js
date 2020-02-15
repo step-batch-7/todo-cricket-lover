@@ -44,6 +44,10 @@ const userLogin = function() {
   document.querySelector('.password.login').value = '';
 
   const onloadHandler = res => {
+    if (res.status === 200) {
+      document.location.href = res.getResponseHeader('location');
+      return;
+    }
     document.querySelector('.popup').innerText = res.responseText;
   };
 
