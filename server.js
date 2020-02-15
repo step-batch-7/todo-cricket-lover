@@ -1,5 +1,5 @@
 'use strict';
-const { app } = require('./lib/handler');
+const { app } = require('./lib/app');
 
 const main = function() {
   const port = 9000;
@@ -8,4 +8,5 @@ const main = function() {
     process.stdout.write('server is listening\n');
   });
 };
+
 main();

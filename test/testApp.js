@@ -1,7 +1,7 @@
 const sinon = require('sinon');
 const request = require('supertest');
 const fs = require('fs');
-const { app } = require('../lib/handler');
+const { app } = require('../lib/app');
 
 describe('GET', function() {
   context('/', function() {
