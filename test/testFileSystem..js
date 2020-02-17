@@ -1,9 +1,9 @@
 const fs = require('fs');
 const { assert } = require('chai');
 const sinon = require('sinon');
-const { getTodoList, writeToTodoList } = require('../lib/fileSystem');
+const { getUserTodos, updateUserTodos } = require('../lib/fileSystem');
 
-describe('getTodoList', function() {
+describe('getUserTodos', function() {
   let stubbedExists, stubbedRead;
 
   beforeEach(function() {
@@ -20,18 +20,18 @@ describe('getTodoList', function() {
   it('should get the parsed todo list if it exists', function() {
     stubbedRead.returns(JSON.stringify([{ name: 'hello world' }]));
     stubbedExists.returns(true);
-    const todoList = getTodoList();
+    const todoList = getUserTodos();
     assert.deepStrictEqual(todoList, [{ name: 'hello world' }]);
   });
 
   it('should get an empty array if file does not exists', function() {
     stubbedExists.returns(false);
-    const todoList = getTodoList();
-    assert.deepStrictEqual(todoList, []);
+    const todoList = getUserTodos();
+    assert.deepStrictEqual(todoList, {});
   });
 });
 
-describe('writeToTodoList', function() {
+describe('updateUserTodos', function() {
   let stubbedExists, writeSpy, mkDirSpy;
 
   beforeEach(function() {
@@ -49,7 +49,7 @@ describe('writeToTodoList', function() {
 
   it('should write to the file if exists', function() {
     stubbedExists.returns(true);
-    writeToTodoList('someText');
+    updateUserTodos('someText');
     sinon.assert.notCalled(mkDirSpy);
     sinon.assert.calledWithExactly(
       writeSpy,
@@ -60,7 +60,7 @@ describe('writeToTodoList', function() {
 
   it('should create the directory  before writing to the file', function() {
     stubbedExists.returns(false);
-    writeToTodoList('someText');
+    updateUserTodos('someText');
     sinon.assert.calledWithExactly(mkDirSpy, './data');
     sinon.assert.calledWithExactly(
       writeSpy,

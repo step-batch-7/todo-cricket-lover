@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "export DATA_STORE=test/resources/todo.json; nyc mocha",
-    "start": "export DATA_STORE=data/todo.json; node server.js",
+    "test": "export DATA_STORE=test/resources/todo.json; export APP_DATA=../test/resources/appData.js; nyc mocha",
+    "start": "export DATA_STORE=data/todo.json; export APP_DATA=appData.js; node server.js",
     "eslint": "eslint . --ext .js",
     "preCommit": "npm test && npm run eslint"
   },
