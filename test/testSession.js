@@ -1,11 +1,11 @@
 const { assert } = require('chai');
 const sinon = require('sinon');
-const { Session } = require('../lib/session');
+const { Sessions } = require('../lib/sessions');
 
 describe('Session', function() {
   let session;
   beforeEach(function() {
-    session = new Session();
+    session = new Sessions();
   });
 
   context('.createId', function() {
@@ -13,7 +13,7 @@ describe('Session', function() {
       const stubbedTime = sinon.stub();
       sinon.replace(Date.prototype, 'getTime', stubbedTime);
       stubbedTime.returns(123);
-      const id = session.addUser('anil');
+      const id = session.addSession('anil');
       assert.deepStrictEqual(id, 'anil123');
       sinon.restore();
     });
@@ -21,7 +21,7 @@ describe('Session', function() {
 
   context('.deleteUser', function() {
     it('should delete the user from the session', function() {
-      assert.isTrue(session.deleteUser('phani'));
+      assert.isTrue(session.deleteSession('phani'));
     });
   });
 
@@ -30,7 +30,7 @@ describe('Session', function() {
       const stubbedTime = sinon.stub();
       sinon.replace(Date.prototype, 'getTime', stubbedTime);
       stubbedTime.returns(123);
-      const id = session.addUser('anil');
+      const id = session.addSession('anil');
       assert.deepStrictEqual(session.getUser(id), 'anil');
     });
   });

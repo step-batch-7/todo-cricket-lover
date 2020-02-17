@@ -1,18 +1,17 @@
-const { TodoList } = require('../../lib/todoList');
+const { Sessions } = require('../../lib/sessions');
+const { Users } = require('../../lib/users');
 const { getUserTodos } = require('../../lib/fileSystem');
 
-const todos = getUserTodos();
-const userTodos = { userName: TodoList.load(todos) };
+const userTodos = getUserTodos();
 const userInfo = { userName: 'pswd123' };
-const session = { abc123: 'userName' };
-const updateUserInfo = () => {};
+const sessions = new Sessions();
+sessions.session = { abc123: 'userName' };
 const unloadUserTodos = () => {};
 
+const users = Users.load(userInfo, userTodos);
+
 module.exports = {
-  TodoList,
-  userTodos,
-  userInfo,
-  session,
-  updateUserInfo,
+  users,
+  sessions,
   unloadUserTodos
 };
