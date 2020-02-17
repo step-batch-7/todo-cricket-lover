@@ -454,6 +454,102 @@ describe('POST', function() {
   });
 });
 
+describe('POST /signup', function() {
+  it('should sign the user up if username does not exist', function(done) {
+    request(app)
+      .post('/signUserUp')
+      .send('userName=bernie&password=walker')
+      .expect(200)
+      .expect('Successfully Registered')
+      .end(err => {
+        if (err) {
+          done(err);
+          return;
+        }
+        done();
+      });
+  });
+
+  it('should respond with conflict if username exists', function(done) {
+    request(app)
+      .post('/signUserUp')
+      .send('userName=userName&password=walker')
+      .expect(409)
+      .expect('Username already exists')
+      .end(err => {
+        if (err) {
+          done(err);
+          return;
+        }
+        done();
+      });
+  });
+});
+
+describe('POST /userLogin', function() {
+  it('should log the user in when credentials are right', function(done) {
+    request(app)
+      .post('/userLogin')
+      .send('userName=userName&password=pswd123')
+      .expect(200)
+      .expect('Set-Cookie', /sesId=userName\d+/)
+      .end(err => {
+        if (err) {
+          done(err);
+          return;
+        }
+        done();
+      });
+  });
+
+  it('should respond with conflict when the credentials are wrong', function(done) {
+    request(app)
+      .post('/userLogin')
+      .send('userName=username&password=pswd123')
+      .expect(401)
+      .expect('Wrong username or password')
+      .end(err => {
+        if (err) {
+          done(err);
+          return;
+        }
+        done();
+      });
+  });
+
+  it('should respond with conflict when the credentials are wrong', function(done) {
+    request(app)
+      .post('/userLogin')
+      .send('userName=userName&password=pwd123')
+      .expect(401)
+      .expect('Wrong username or password')
+      .end(err => {
+        if (err) {
+          done(err);
+          return;
+        }
+        done();
+      });
+  });
+});
+
+describe('GET /logout', function() {
+  it('should logout of the page', function(done) {
+    request(app)
+      .get('/logout')
+      .set('Cookie', ['sesId=abc123'])
+      .expect(200)
+      .expect('Location', '/')
+      .end(err => {
+        if (err) {
+          done(err);
+          return;
+        }
+        done();
+      });
+  });
+});
+
 describe('GET /homePage', function() {
   it('should give unauthorized when not logged in', function(done) {
     request(app)
