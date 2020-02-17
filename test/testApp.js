@@ -2,6 +2,7 @@ const fs = require('fs');
 const sinon = require('sinon');
 const request = require('supertest');
 const { app } = require('../lib/app');
+const { expect } = require('chai');
 const { TodoList } = require('../lib/todoList');
 
 describe('GET', function() {
@@ -540,11 +541,12 @@ describe('GET /logout', function() {
       .set('Cookie', ['sesId=abc123'])
       .expect(200)
       .expect('Location', '/')
-      .end(err => {
+      .end((err, res) => {
         if (err) {
           done(err);
           return;
         }
+        expect(res.header).to.not.have.key('cookie');
         done();
       });
   });
