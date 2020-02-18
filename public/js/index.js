@@ -16,6 +16,7 @@ const sendXHR = function(method, url, message, onloadHandler) {
 
 const showPopup = function(text, category) {
   document.querySelector('.popup-text').innerText = text;
+  document.querySelector('.popup').classList.remove('affirm', 'warn');
   document.querySelector('.popup').classList.add(category, 'unhide');
 };
 

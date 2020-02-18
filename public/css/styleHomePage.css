@@ -50,6 +50,7 @@ img:hover {
 
 .addTitle {
   height: 20px;
+  outline: none;
 }
 
 .item {
@@ -57,7 +58,6 @@ img:hover {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  /* height: 19px; */
   width: 98%;
 }
 
@@ -89,6 +89,7 @@ img:hover {
 .addItem {
   height: 20px;
   width: 363px;
+  outline: none;
 }
 
 .todo-list-container {
