@@ -1,21 +1,54 @@
-h2 {
-  font-weight: normal;
+body {
+  font-family: sans-serif;
+  letter-spacing: 0.05vw;
 }
 
 .popup {
   border: 0.1vw solid;
-  width: 97.8%;
-  padding: 0.2%;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 0.2vw;
+  width: 50%;
+  height: fit-content;
+  margin-left: 23%;
   text-align: center;
   height: 5%;
   position: fixed;
   left: 1%;
 }
 
-.sign-up-login-container {
-  border: 1px solid gray;
-  padding: 2% 2% 5% 2%;
-  width: 30%;
+.popup-text {
+  font-size: 1.6vw;
+  margin: 0.7% 0%;
+  width: 94%;
+}
+
+.close-popup {
+  border: 0.12vw solid;
+  border-radius: 0.5vw;
+  padding-top: 0.45%;
+  width: 4%;
+  margin: 0.5% auto;
+}
+
+.affirm {
+  background-color: rgb(178, 241, 209);
+  border-color: rgb(47, 141, 9);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.warn {
+  background-color: rgba(253, 86, 57, 0.685);
+  border-color: tomato;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.unhide {
+  visibility: visible;
 }
 
 .main-container {
@@ -25,30 +58,56 @@ h2 {
   justify-content: space-around;
   text-align: center;
   position: fixed;
-  top: 22.5%;
-  left: 16.5%;
-  width: 50%;
-  height: 40%;
+  top: 21%;
+  left: 11%;
+  width: 70%;
+  height: 50%;
   padding: 3%;
 }
 
-.username {
+.sign-up-login-container {
+  border: 1px solid gray;
+  border-radius: 0.5vw;
+  padding: 2% 2% 5% 2%;
+  width: 30%;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.username,
+.password {
+  border: 0.2vw solid rgba(200, 200, 200, 0.5);
+  border-radius: 0.5vw;
   height: 10%;
   width: 80%;
+  outline: none;
 }
 
 .password {
-  height: 10%;
-  width: 80%;
   margin-bottom: 15%;
+  margin-top: 2%;
+}
+
+.username:focus {
+  border: 0.2vw solid rgba(119, 197, 245, 0.8);
+}
+
+.password:focus {
+  border: 0.2vw solid rgba(119, 197, 245, 0.8);
 }
 
 .submit-button {
+  border: 0.115vw solid rgba(200, 200, 200, 0.5);
   height: 10%;
   width: 80%;
+  border-radius: 0.5vw;
+  outline: none;
+  font-size: 1.1vw;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .submit-button:hover {
-  background-color: rgb(119, 197, 245);
-  outline: none;
+  background-color: rgba(119, 197, 245, 0.8);
+  color: rgba(0, 0, 0, 0.8);
 }

@@ -14,6 +14,15 @@ const sendXHR = function(method, url, message, onloadHandler) {
   request.send(message);
 };
 
+const showPopup = function(text, category) {
+  document.querySelector('.popup-text').innerText = text;
+  document.querySelector('.popup').classList.add(category, 'unhide');
+};
+
+const closePopup = function() {
+  document.querySelector('.popup').classList.remove('unhide', 'affirm', 'warn');
+};
+
 const signUserUp = function() {
   const userName = document.querySelector('.username.sign-up').value;
   const password = document.querySelector('.password.sign-up').value;
@@ -21,12 +30,17 @@ const signUserUp = function() {
   document.querySelector('.password.sign-up').value = '';
 
   if (!userName || !password) {
-    document.querySelector('.popup').innerText = 'Fields can not be left empty';
+    showPopup('Fields can not be left empty', 'warn');
     return;
   }
 
   const onloadHandler = res => {
-    document.querySelector('.popup').innerText = res.responseText;
+    const responseText = res.responseText;
+    let category = 'warn';
+    if (res.status === 200) {
+      category = 'affirm';
+    }
+    showPopup(responseText, category);
   };
 
   sendXHR(
@@ -48,7 +62,7 @@ const userLogin = function() {
       document.location.href = res.getResponseHeader('location');
       return;
     }
-    document.querySelector('.popup').innerText = res.responseText;
+    showPopup(res.responseText, 'warn');
   };
 
   sendXHR(
