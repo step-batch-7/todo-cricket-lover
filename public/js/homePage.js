@@ -52,9 +52,7 @@ const generateTodo = function(todo) {
   return todoContainer;
 };
 
-let TODO_LIST = [];
-
-const showTodoList = function(todoList = TODO_LIST) {
+const showTodoList = function(todoList) {
   const todoListContainer = document.querySelector('.todo-list-container');
   const todo = todoList.map(generateTodo);
   todoListContainer.innerHTML = todo.join('\n');
@@ -62,10 +60,16 @@ const showTodoList = function(todoList = TODO_LIST) {
 
 const sendXHR = function(method, url, message, onloadHandler = showTodoList) {
   const request = new XMLHttpRequest();
-  request.onload = function() {
-    TODO_LIST = this.responseText && JSON.parse(this.responseText);
-    onloadHandler();
+  request.onerror = function() {
+    document.body.innerHTML =
+      '<h1>Error while processing please come back after sometime</h1>';
   };
+
+  request.onload = function() {
+    const todoList = this.responseText && JSON.parse(this.responseText);
+    onloadHandler(todoList);
+  };
+
   request.open(method, url);
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   request.send(message);
@@ -125,22 +129,40 @@ const modifyItem = function(todoId, taskId) {
   sendXHR('PATCH', 'modifyItem', message);
 };
 
-const searchByTitle = function(calledOn) {
+const searchByTitle = function(calledOn, todoList) {
   const matcher = new RegExp(calledOn.value, 'i');
-  const matchedList = TODO_LIST.filter(todo => todo.title.match(matcher));
+  const matchedList = todoList.filter(todo => todo.title.match(matcher));
   showTodoList(matchedList);
 };
 
-const searchByTask = function(calledOn) {
+const searchByTask = function(calledOn, todoList) {
   if (calledOn.value === '') {
-    showTodoList();
+    showTodoList(todoList);
     return;
   }
   const matcher = new RegExp(calledOn.value, 'i');
-  const matchedList = TODO_LIST.filter(todo =>
+  const matchedList = todoList.filter(todo =>
     todo.items.some(item => item.task.match(matcher))
   );
   showTodoList(matchedList);
+};
+
+const attachSearchFunction = function(calledOn) {
+  const className = calledOn.getAttribute('class');
+  const searchFunctionLookup = {
+    'title-search': searchByTitle,
+    'task-search': searchByTask
+  };
+  const handler = searchFunctionLookup[className];
+
+  const attachHandlerToSearchSection = todoList => {
+    const handlerBoundWithData = handler.bind(null, calledOn, todoList);
+    document
+      .querySelector(`.${className}`)
+      .addEventListener('input', handlerBoundWithData);
+  };
+
+  sendXHR('GET', '/todoList', '', attachHandlerToSearchSection);
 };
 
 const logout = function() {
