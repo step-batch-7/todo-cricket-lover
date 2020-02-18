@@ -17,6 +17,10 @@ body {
   left: 1%;
 }
 
+button {
+  cursor: pointer;
+}
+
 .popup-text {
   font-size: 1.6vw;
   margin: 0.7% 0%;
@@ -29,6 +33,7 @@ body {
   padding-top: 0.45%;
   width: 4%;
   margin: 0.5% auto;
+  cursor: pointer;
 }
 
 .affirm {
@@ -107,7 +112,8 @@ body {
   color: rgba(0, 0, 0, 0.6);
 }
 
-.submit-button:hover {
+.submit-button:hover,
+.submit-button:focus {
   background-color: rgba(119, 197, 245, 0.8);
   color: rgba(0, 0, 0, 0.8);
 }
