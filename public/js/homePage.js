@@ -7,7 +7,8 @@ const generateItemTemplate = function(todoId, html, item) {
 	<p><input type="checkbox" name="checkbox"
 	class="checkbox" onclick="changeItemStatus(${todoId}, ${taskId})" 
 	${checkStat}>
-	<span onfocusout="modifyItem(${todoId}, ${taskId})">${task}</span>
+  <span onfocusout="modifyItem(${todoId}, ${taskId})" class="${checkStat}">
+  ${task}</span>
 	</p><div><img src="./images/edit.svg" alt="edit" 
 	onclick="editItem(${todoId}, ${taskId})">
 	<img src="./images/remove.svg" alt="delete" 
@@ -54,7 +55,7 @@ const generateTodo = function(todo) {
 
 const showTodoList = function(todoList) {
   const todoListContainer = document.querySelector('.todo-list-container');
-  const todo = todoList.map(generateTodo);
+  const todo = todoList.reverse().map(generateTodo);
   todoListContainer.innerHTML = todo.join('\n');
 };
 

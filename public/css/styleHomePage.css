@@ -4,10 +4,10 @@ body {
 
 h1 {
   text-align: center;
-  border: 1px solid gray;
-  border-radius: 6px;
+  border: 0.1vw solid gray;
+  border-radius: 0.5vw;
   box-shadow: gray;
-  width: 200px;
+  width: 15.6vw;
   margin: auto;
 }
 
@@ -25,13 +25,12 @@ h2 {
 }
 
 .todo {
-  background-color: white;
-  border: 1px solid darkgray;
-  margin: 20px 20px 20px 20px;
-  margin-bottom: 20px;
-  border-radius: 6px;
+  width: 32.5%;
+  border: 0.1vw solid darkgray;
+  margin: 2vw 2vw 2vw 2vw;
+  border-radius: 0.6vw;
   font-weight: lighter;
-  padding: 10px 10px 20px 10px;
+  padding: 1vw 1vw 0.5vw 1vw;
   height: fit-content;
 }
 
@@ -49,16 +48,23 @@ img:hover {
 }
 
 .addTitle {
-  height: 20px;
+  height: 1.6vw;
   outline: none;
 }
 
+.checked {
+  text-decoration: line-through;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.6);
+}
+
 .item {
-  margin: 10px 0px 0px 0px;
+  margin: 1vw auto;
+  padding-top: 1%;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-  width: 98%;
+  width: 99.5%;
 }
 
 .item:hover {
@@ -74,7 +80,7 @@ img:hover {
 }
 
 .todo-adder {
-  margin-top: 40px;
+  margin-top: 3.1vw;
   display: flex;
   flex-flow: row wrap;
   border-collapse: collapse;
@@ -87,19 +93,19 @@ img:hover {
 }
 
 .addItem {
-  height: 20px;
-  width: 363px;
+  height: 1.6vw;
+  width: 92.6%;
   outline: none;
 }
 
 .todo-list-container {
-  margin-top: 20px;
+  margin-top: 1.6vw;
   display: flex;
   flex-wrap: wrap;
   padding: 30px;
   justify-content: flex-start;
   border-top: 2px solid grey;
-  max-height: 32vw;
+  max-height: 28vw;
   overflow-y: scroll;
 }
 

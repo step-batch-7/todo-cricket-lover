@@ -3,6 +3,15 @@ body {
   letter-spacing: 0.05vw;
 }
 
+.logo {
+  text-align: center;
+  width: fit-content;
+  margin: auto;
+  border: 0.2vw solid rgba(0, 0, 0, 0.8);
+  padding: 0.2vw;
+  border-radius: 0.5vw;
+}
+
 .popup {
   border: 0.1vw solid;
   display: flex;
